@@ -13,8 +13,8 @@ public class Target : MonoBehaviour
 
         SetCoordinate();
         CreateCircleSprite();
-        GenerateSprites(1, 2, 3, 4);
-        GenerateSpritesNumber(new Dictionary<int, int> { { 1, 1 }, { 2, 2 }, { 3, 3 }, { 4, 4 } });
+        GenerateSprites(1, 3, 4);
+        GenerateSpritesNumber(new Dictionary<int, int> { { 1, 1 }, { 4, 2 }, { 3, 3 } });
     }
 
     private void SetCoordinate()
@@ -22,14 +22,16 @@ public class Target : MonoBehaviour
         Camera mainCamera = Camera.main;
         const float center = 0.5f;
         const float offset = 0.15f;
+        const float position = 0.01f;
+        float nearClipPlane = mainCamera.nearClipPlane + position;
 
         // Generate target positions
-        Vector3 top = mainCamera.ViewportToWorldPoint(new Vector3(center, 1 - offset, mainCamera.nearClipPlane));
-        Vector3 bottom = mainCamera.ViewportToWorldPoint(new Vector3(center, offset, mainCamera.nearClipPlane));
-        Vector3 left = mainCamera.ViewportToWorldPoint(new Vector3(offset, center, mainCamera.nearClipPlane));
-        Vector3 right = mainCamera.ViewportToWorldPoint(new Vector3(1 - offset, center, mainCamera.nearClipPlane));
-        Vector3 leftBottom = mainCamera.ViewportToWorldPoint(new Vector3(center - offset, offset, mainCamera.nearClipPlane));
-        Vector3 rightBottom = mainCamera.ViewportToWorldPoint(new Vector3(center + offset, offset, mainCamera.nearClipPlane));
+        Vector3 top = mainCamera.ViewportToWorldPoint(new Vector3(center, 1 - offset, nearClipPlane));
+        Vector3 bottom = mainCamera.ViewportToWorldPoint(new Vector3(center, offset, nearClipPlane));
+        Vector3 left = mainCamera.ViewportToWorldPoint(new Vector3(offset, center, nearClipPlane));
+        Vector3 right = mainCamera.ViewportToWorldPoint(new Vector3(1 - offset, center, nearClipPlane));
+        Vector3 leftBottom = mainCamera.ViewportToWorldPoint(new Vector3(center - offset, offset, nearClipPlane));
+        Vector3 rightBottom = mainCamera.ViewportToWorldPoint(new Vector3(center + offset, offset, nearClipPlane));
 
         targets = new Dictionary<int, Vector3>
         {
