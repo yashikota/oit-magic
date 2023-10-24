@@ -4,125 +4,103 @@ using TMPro;
 
 public class Target : MonoBehaviour
 {
-    GameObject circleObject;
-    private Dictionary<int, Vector3> targets;
+    Camera mainCamera;
+    private Dictionary<string, Vector3> targetCoordinates;
+    private const int textureSize = 256;
 
     void Start()
     {
-        circleObject = new GameObject("Circle");
-
+        mainCamera = Camera.main;
         SetCoordinate();
-        CreateCircleSprite();
-        GenerateSprites(1, 3, 4);
-        GenerateSpritesNumber(new Dictionary<int, int> { { 1, 1 }, { 4, 2 }, { 3, 3 } });
+
+        // test
+        GenerateTargets(new Dictionary<string, string> { { "Top", "1" }, { "Bottom", "2" }, { "Right", "3" } });
     }
 
     private void SetCoordinate()
     {
-        Camera mainCamera = Camera.main;
         const float center = 0.5f;
         const float offset = 0.15f;
         const float position = 0.01f;
         float nearClipPlane = mainCamera.nearClipPlane + position;
 
-        // Generate target positions
-        Vector3 top = mainCamera.ViewportToWorldPoint(new Vector3(center, 1 - offset, nearClipPlane));
-        Vector3 bottom = mainCamera.ViewportToWorldPoint(new Vector3(center, offset, nearClipPlane));
-        Vector3 left = mainCamera.ViewportToWorldPoint(new Vector3(offset, center, nearClipPlane));
-        Vector3 right = mainCamera.ViewportToWorldPoint(new Vector3(1 - offset, center, nearClipPlane));
-        Vector3 leftBottom = mainCamera.ViewportToWorldPoint(new Vector3(center - offset, offset, nearClipPlane));
-        Vector3 rightBottom = mainCamera.ViewportToWorldPoint(new Vector3(center + offset, offset, nearClipPlane));
-
-        targets = new Dictionary<int, Vector3>
+        targetCoordinates = new Dictionary<string, Vector3>
         {
-            { 1, top },
-            { 2, left },
-            { 3, right },
-            { 4, bottom },
-            { 5, leftBottom },
-            { 6, rightBottom }
+            { "Top", mainCamera.ViewportToWorldPoint(new Vector3(center, 1 - offset, nearClipPlane))},
+            { "Bottom", mainCamera.ViewportToWorldPoint(new Vector3(center, offset, nearClipPlane)) },
+            { "Left", mainCamera.ViewportToWorldPoint(new Vector3(offset, center, nearClipPlane)) },
+            { "Right", mainCamera.ViewportToWorldPoint(new Vector3(1 - offset, center, nearClipPlane)) },
+            { "BottomLeft", mainCamera.ViewportToWorldPoint(new Vector3(center - offset, offset, nearClipPlane)) },
+            { "BottomRight", mainCamera.ViewportToWorldPoint(new Vector3(center + offset, offset, nearClipPlane)) }
         };
     }
 
-    private void CreateCircleSprite()
+    private Texture2D GenerateCircleTexture()
     {
-        const float radius = 0.01f;
-        const int textureSize = 256;
-
-        SpriteRenderer spriteRenderer = circleObject.AddComponent<SpriteRenderer>();
-
         Texture2D circleTexture = new(textureSize, textureSize)
         {
             filterMode = FilterMode.Bilinear,
             wrapMode = TextureWrapMode.Clamp
         };
 
+        Vector2 circleCenter = new(textureSize / 2, textureSize / 2);
+
         for (int x = 0; x < circleTexture.width; x++)
         {
             for (int y = 0; y < circleTexture.height; y++)
             {
-                if (Vector2.Distance(new Vector2(x, y), new Vector2(circleTexture.width / 2, circleTexture.height / 2)) <= circleTexture.width / 2)
-                {
-                    circleTexture.SetPixel(x, y, Color.white);
-                }
-                else
-                {
-                    circleTexture.SetPixel(x, y, Color.clear);
-                }
+                Vector2 pixelPosition = new(x, y);
+                float distance = Vector2.Distance(pixelPosition, circleCenter);
+                circleTexture.SetPixel(x, y, distance <= textureSize / 2 ? Color.white : Color.clear);
             }
         }
+
         circleTexture.Apply();
 
-        spriteRenderer.sprite = Sprite.Create(circleTexture, new Rect(0, 0, circleTexture.width, circleTexture.height), Vector2.one * 0.5f);
-
-        circleObject.transform.localScale = new Vector3(radius, radius, 1.0f);
+        return circleTexture;
     }
 
-    public void GenerateSprites(params int[] spriteNumbers)
+    private void GenerateTarget(string target, string targetNumber)
     {
-        int spriteLayer = 0;
-        foreach (int spriteNumber in spriteNumbers)
+        if (targetCoordinates.TryGetValue(target, out Vector3 targetPosition))
         {
-            if (targets.ContainsKey(spriteNumber))
+            // Sprite
+            const float radius = 0.025f;
+            GameObject spriteObject = new("Sprite")
             {
-                Vector3 targetPosition = targets[spriteNumber];
-                GameObject newCircle = Instantiate(circleObject, targetPosition, Quaternion.identity);
-                newCircle.name = "Target" + spriteNumber;
+                name = "TargetSprite" + targetNumber
+            };
+            SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = Sprite.Create(GenerateCircleTexture(), new Rect(0, 0, textureSize, textureSize), new Vector2(0.5f, 0.5f), textureSize);
+            spriteObject.transform.position = targetPosition;
+            spriteObject.transform.localScale = new Vector3(radius, radius, 1);
+            spriteObject.transform.LookAt(mainCamera.transform);
+            spriteRenderer.color = new Color(1, 1, 1, 1);
+            spriteRenderer.sortingOrder = 0;
 
-                // Set layer
-                SpriteRenderer spriteRenderer = newCircle.GetComponent<SpriteRenderer>();
-                spriteRenderer.sortingOrder = spriteLayer;
-                spriteLayer++;
-            }
+            // Text
+            GameObject textObject = new("Text")
+            {
+                name = "TargetText" + targetNumber
+            };
+            TextMeshPro textMesh = textObject.AddComponent<TextMeshPro>();
+            textMesh.text = targetNumber.ToString();
+            textMesh.fontSize = 2.5f;
+            textObject.transform.position = targetPosition;
+            textObject.transform.localScale = new Vector3(0.1f, 0.1f, 1);
+            textObject.transform.rotation = Quaternion.LookRotation(textObject.transform.position - mainCamera.transform.position);
+            textMesh.color = new Color(0, 0, 0, 1);
+            textMesh.alignment = TextAlignmentOptions.Center;
+            textMesh.alignment = TextAlignmentOptions.Midline;
+            textMesh.sortingOrder = 1;
         }
     }
 
-    public void GenerateSpritesNumber(Dictionary<int, int> spriteNumbers)
+    public void GenerateTargets(Dictionary<string, string> targets)
     {
-        int textLayer = 1;
-        foreach (KeyValuePair<int, int> spriteNumber in spriteNumbers)
+        foreach (KeyValuePair<string, string> target in targets)
         {
-            if (targets.ContainsKey(spriteNumber.Key))
-            {
-                Vector3 targetPosition = targets[spriteNumber.Key];
-                GameObject textObject = new("Text")
-                {
-                    name = "Text" + spriteNumber.Key
-                };
-
-                TextMeshPro textMesh = textObject.AddComponent<TextMeshPro>();
-                textMesh.text = spriteNumber.Value.ToString();
-                textMesh.fontSize = 2.5f;
-                textObject.transform.position = targetPosition;
-                textObject.transform.localScale = new Vector3(0.1f, 0.1f, 1);
-                textMesh.color = new Color(0, 0, 0, 1);
-                textMesh.alignment = TextAlignmentOptions.Center;
-                textMesh.alignment = TextAlignmentOptions.Midline;
-
-                // Set layer
-                textMesh.sortingOrder = textLayer;
-                textLayer++;
-            }
+            GenerateTarget(target.Key, target.Value);
         }
     }
 }
