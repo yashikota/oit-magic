@@ -6,24 +6,25 @@ public class Target : MonoBehaviour
 {
     Camera mainCamera;
     CircleTexture circleTexture;
-    private Dictionary<string, Vector3> targetCoordinates;
+    private Dictionary<string, Vector3> targetPositions;
 
 
     void Start()
     {
         mainCamera = Camera.main;
         circleTexture = FindObjectOfType<CircleTexture>();
-        SetCoordinate();
+
+        SetPosition();
     }
 
-    private void SetCoordinate()
+    private void SetPosition()
     {
         const float center = 0.5f;
         const float offset = 0.15f;
         const float position = 0.01f;
         float nearClipPlane = mainCamera.nearClipPlane + position;
 
-        targetCoordinates = new Dictionary<string, Vector3>
+        targetPositions = new Dictionary<string, Vector3>
         {
             { "Top", mainCamera.ViewportToWorldPoint(new Vector3(center, 1 - offset, nearClipPlane))},
             { "Bottom", mainCamera.ViewportToWorldPoint(new Vector3(center, offset, nearClipPlane)) },
@@ -34,9 +35,14 @@ public class Target : MonoBehaviour
         };
     }
 
+    public Dictionary<string, Vector3> GetTargetPositions()
+    {
+        return targetPositions;
+    }
+
     private void GenerateTarget(string target, string targetNumber)
     {
-        if (targetCoordinates.TryGetValue(target, out Vector3 targetPosition))
+        if (targetPositions.TryGetValue(target, out Vector3 targetPosition))
         {
             // Sprite
             const float radius = 0.025f;

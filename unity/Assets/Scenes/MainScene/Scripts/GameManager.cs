@@ -1,13 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private Target target;
+    private Pointer pointer;
+
     private int round = 1;
+    Dictionary<string, Vector3> targetPositions;
+    Vector3 pointerPosition;
 
     void Start()
     {
         target = FindObjectOfType<Target>();
+        pointer = FindObjectOfType<Pointer>();
+
+        targetPositions = target.GetTargetPositions();
+
         GameCycle();
     }
 
@@ -17,6 +26,35 @@ public class GameManager : MonoBehaviour
         {
             GameCycle();
         }
+
+        pointerPosition = pointer.GetPointerPosition();
+        CheckTargetCollision();
+    }
+
+    private string CheckTargetCollision()
+    {
+        Dictionary<string, float> targetThresholds = new Dictionary<string, float> {
+            {"Top", 0.01f},
+            {"Bottom", 0.01f},
+            {"Left", 0.01f},
+            {"Right", 0.01f},
+            {"BottomLeft", 0.01f},
+            {"BottomRight", 0.01f}
+        };
+
+        foreach (var kvp in targetPositions)
+        {
+            string targetName = kvp.Key;
+            Vector3 targetPosition = kvp.Value;
+            float distance = Vector3.Distance(pointerPosition, targetPosition);
+
+            if (distance <= targetThresholds[targetName])
+            {
+                Debug.Log("Hit " + targetName);
+                return targetName;
+            }
+        }
+        return null;
     }
 
     private void GameCycle()

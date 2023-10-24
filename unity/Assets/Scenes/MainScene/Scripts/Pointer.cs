@@ -33,6 +33,11 @@ public class Pointer : MonoBehaviour
         initializePosition = mainCamera.ViewportToWorldPoint(new Vector3(center, center, nearClipPlane));
     }
 
+    public Vector3 GetPointerPosition()
+    {
+        return pointer.transform.position;
+    }
+
     private void GeneratePointer()
     {
         const float radius = 0.015f;
@@ -63,15 +68,6 @@ public class Pointer : MonoBehaviour
 
                 pointer.transform.position = new Vector3(initializePosition.x + x, initializePosition.y + y, initializePosition.z);
             }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Target"))
-        {
-            string objectName = other.gameObject.name;
-            gameManager.HitTarget(objectName);
         }
     }
 }
