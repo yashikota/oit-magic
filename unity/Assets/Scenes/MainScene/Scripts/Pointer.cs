@@ -10,7 +10,7 @@ public class Pointer : MonoBehaviour
 
     private void Start()
     {
-        initialPosition = spriteObject.transform.position;
+        initialPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         udpReceiver = FindObjectOfType<UDPReceive>();
         mainCamera = Camera.main;
     }
@@ -29,10 +29,8 @@ public class Pointer : MonoBehaviour
                 float y = float.Parse(coordinateParts[1]) / attenuationRate;
 
                 Vector3 newPosition = initialPosition + new Vector3(x, y, 0);
-
                 float cameraZ = mainCamera.transform.position.z;
                 newPosition.z = cameraZ + 0.5f;
-
                 spriteObject.transform.position = newPosition;
             }
         }
