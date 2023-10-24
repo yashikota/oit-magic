@@ -12,9 +12,6 @@ public class Target : MonoBehaviour
     {
         mainCamera = Camera.main;
         SetCoordinate();
-
-        // test
-        GenerateTargets(new Dictionary<string, string> { { "Top", "1" }, { "Bottom", "2" }, { "Right", "3" } });
     }
 
     private void SetCoordinate()
@@ -75,6 +72,7 @@ public class Target : MonoBehaviour
             spriteObject.transform.position = targetPosition;
             spriteObject.transform.localScale = new Vector3(radius, radius, 1);
             spriteObject.transform.LookAt(mainCamera.transform);
+            spriteObject.tag = "Target";
             spriteRenderer.color = new Color(1, 1, 1, 1);
             spriteRenderer.sortingOrder = 0;
 
@@ -89,6 +87,7 @@ public class Target : MonoBehaviour
             textObject.transform.position = targetPosition;
             textObject.transform.localScale = new Vector3(0.1f, 0.1f, 1);
             textObject.transform.rotation = Quaternion.LookRotation(textObject.transform.position - mainCamera.transform.position);
+            textObject.tag = "Target";
             textMesh.color = new Color(0, 0, 0, 1);
             textMesh.alignment = TextAlignmentOptions.Center;
             textMesh.alignment = TextAlignmentOptions.Midline;
@@ -96,11 +95,27 @@ public class Target : MonoBehaviour
         }
     }
 
-    public void GenerateTargets(Dictionary<string, string> targets)
+    public void GenerateTargets(string[,] targets)
     {
-        foreach (KeyValuePair<string, string> target in targets)
+        for (int i = 0; i < targets.GetLength(0); i++)
         {
-            GenerateTarget(target.Key, target.Value);
+            GenerateTarget(targets[i, 0], targets[i, 1]);
+        }
+    }
+
+    public void RewriteTargetNumber(string targetNumber, string newTargetNumber)
+    {
+        GameObject targetText = GameObject.Find("TargetText" + targetNumber);
+        targetText.name = "TargetText" + newTargetNumber;
+        targetText.GetComponent<TextMeshPro>().text = newTargetNumber;
+    }
+
+    public void DestroyTargets()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Target");
+        foreach (GameObject target in targets)
+        {
+            Destroy(target);
         }
     }
 }
