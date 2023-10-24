@@ -76,3 +76,4 @@ crashlytics-build.properties
 /[Aa]ssets/*.meta
 !/Assets/Scenes
 !/Assets/Terrain.*
+!/Assets/Images
