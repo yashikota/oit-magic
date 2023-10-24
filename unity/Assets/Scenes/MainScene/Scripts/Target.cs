@@ -5,12 +5,14 @@ using TMPro;
 public class Target : MonoBehaviour
 {
     Camera mainCamera;
+    CircleTexture circleTexture;
     private Dictionary<string, Vector3> targetCoordinates;
-    private const int textureSize = 256;
+
 
     void Start()
     {
         mainCamera = Camera.main;
+        circleTexture = FindObjectOfType<CircleTexture>();
         SetCoordinate();
     }
 
@@ -32,31 +34,6 @@ public class Target : MonoBehaviour
         };
     }
 
-    private Texture2D GenerateCircleTexture()
-    {
-        Texture2D circleTexture = new(textureSize, textureSize)
-        {
-            filterMode = FilterMode.Bilinear,
-            wrapMode = TextureWrapMode.Clamp
-        };
-
-        Vector2 circleCenter = new(textureSize / 2, textureSize / 2);
-
-        for (int x = 0; x < circleTexture.width; x++)
-        {
-            for (int y = 0; y < circleTexture.height; y++)
-            {
-                Vector2 pixelPosition = new(x, y);
-                float distance = Vector2.Distance(pixelPosition, circleCenter);
-                circleTexture.SetPixel(x, y, distance <= textureSize / 2 ? Color.white : Color.clear);
-            }
-        }
-
-        circleTexture.Apply();
-
-        return circleTexture;
-    }
-
     private void GenerateTarget(string target, string targetNumber)
     {
         if (targetCoordinates.TryGetValue(target, out Vector3 targetPosition))
@@ -67,31 +44,35 @@ public class Target : MonoBehaviour
             {
                 name = "TargetSprite" + targetNumber
             };
+
             SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = Sprite.Create(GenerateCircleTexture(), new Rect(0, 0, textureSize, textureSize), new Vector2(0.5f, 0.5f), textureSize);
+            spriteRenderer.sprite = Sprite.Create(circleTexture.GenerateCircleTexture(), new Rect(0, 0, CircleTexture.textureSize, CircleTexture.textureSize), new Vector2(0.5f, 0.5f), CircleTexture.textureSize);
+            spriteRenderer.color = new Color(1, 1, 1, 1);
+            spriteRenderer.sortingOrder = 0;
+
             spriteObject.transform.position = targetPosition;
             spriteObject.transform.localScale = new Vector3(radius, radius, 1);
             spriteObject.transform.LookAt(mainCamera.transform);
             spriteObject.tag = "Target";
-            spriteRenderer.color = new Color(1, 1, 1, 1);
-            spriteRenderer.sortingOrder = 0;
 
             // Text
             GameObject textObject = new("Text")
             {
                 name = "TargetText" + targetNumber
             };
+
             TextMeshPro textMesh = textObject.AddComponent<TextMeshPro>();
             textMesh.text = targetNumber.ToString();
             textMesh.fontSize = 2.5f;
-            textObject.transform.position = targetPosition;
-            textObject.transform.localScale = new Vector3(0.1f, 0.1f, 1);
-            textObject.transform.rotation = Quaternion.LookRotation(textObject.transform.position - mainCamera.transform.position);
-            textObject.tag = "Target";
             textMesh.color = new Color(0, 0, 0, 1);
             textMesh.alignment = TextAlignmentOptions.Center;
             textMesh.alignment = TextAlignmentOptions.Midline;
             textMesh.sortingOrder = 1;
+
+            textObject.transform.position = targetPosition;
+            textObject.transform.localScale = new Vector3(0.1f, 0.1f, 1);
+            textObject.transform.rotation = Quaternion.LookRotation(textObject.transform.position - mainCamera.transform.position);
+            textObject.tag = "Target";
         }
     }
 
