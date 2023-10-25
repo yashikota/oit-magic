@@ -1,56 +1,30 @@
 using UnityEngine;
-using TMPro;
 
 public class Pointer : MonoBehaviour
 {
+    [SerializeField] GameObject pointerSprite;
     private Vector3 initializePosition;
 
     private GameManager gameManager;
     private UDPReceive udpReceiver;
-    private CircleTexture circleTexture;
     private Camera mainCamera;
-    private GameObject pointer;
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
         udpReceiver = FindObjectOfType<UDPReceive>();
-        circleTexture = FindObjectOfType<CircleTexture>();
-        pointer = new("Pointer");
-
         mainCamera = Camera.main;
 
         SetPosition();
-        GeneratePointer();
     }
 
     private void SetPosition()
     {
         const float center = 0.5f;
-        const float position = 0.05f;
+        const float position = 0.02f;
         float nearClipPlane = mainCamera.nearClipPlane + position;
 
         initializePosition = mainCamera.ViewportToWorldPoint(new Vector3(center, center, nearClipPlane));
-    }
-
-    public Vector3 GetPointerPosition()
-    {
-        return pointer.transform.position;
-    }
-
-    private void GeneratePointer()
-    {
-        const float radius = 0.015f;
-
-        SpriteRenderer spriteRenderer = pointer.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Sprite.Create(circleTexture.GenerateCircleTexture(), new Rect(0, 0, CircleTexture.textureSize, CircleTexture.textureSize), new Vector2(0.5f, 0.5f), CircleTexture.textureSize);
-        spriteRenderer.color = new Color(0, 0, 1, 1);
-        spriteRenderer.sortingOrder = 2;
-
-        pointer.transform.position = initializePosition;
-        pointer.transform.localScale = new Vector3(radius, radius, 1);
-        pointer.transform.LookAt(mainCamera.transform);
-        pointer.tag = "Pointer";
     }
 
     private void Update()
@@ -66,8 +40,26 @@ public class Pointer : MonoBehaviour
                 float x = float.Parse(coordinateParts[0]) / attenuationRate;
                 float y = float.Parse(coordinateParts[1]) / attenuationRate;
 
-                pointer.transform.position = new Vector3(initializePosition.x + x, initializePosition.y + y, initializePosition.z);
+                Vector3 position = new Vector3(x, y, 0) + initializePosition;
+                pointerSprite.transform.position = position;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Target"))
+        {
+            string targetName = other.gameObject.name;
+            gameManager.OnHit(targetName);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Target"))
+        {
+            gameManager.IncrementCount();
         }
     }
 }
