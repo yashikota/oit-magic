@@ -32,9 +32,6 @@ public class Target : MonoBehaviour
             { "BottomLeft", mainCamera.ViewportToWorldPoint(new Vector3(center - offset, offset, nearClipPlane)) },
             { "BottomRight", mainCamera.ViewportToWorldPoint(new Vector3(center + offset, offset, nearClipPlane)) }
         };
-
-        // test
-        GenerateTargets(new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Right", "3" } });
     }
 
     private void GenerateTarget(string targetName, string targetNumber)
@@ -68,6 +65,15 @@ public class Target : MonoBehaviour
         foreach (GameObject target in targets)
         {
             Destroy(target);
+        }
+    }
+
+    public void ChangeColor(string targetName, Color color)
+    {
+        GameObject target = GameObject.Find(targetName);
+        if (target != null)
+        {
+            target.GetComponent<Renderer>().material.color = color;
         }
     }
 }
