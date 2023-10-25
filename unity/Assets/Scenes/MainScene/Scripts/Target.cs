@@ -4,15 +4,14 @@ using TMPro;
 
 public class Target : MonoBehaviour
 {
+    [SerializeField] private GameObject targetPrefab;
     Camera mainCamera;
-    CircleTexture circleTexture;
     private Dictionary<string, Vector3> targetPositions;
 
 
     void Start()
     {
         mainCamera = Camera.main;
-        circleTexture = FindObjectOfType<CircleTexture>();
 
         SetPosition();
     }
@@ -21,7 +20,7 @@ public class Target : MonoBehaviour
     {
         const float center = 0.5f;
         const float offset = 0.15f;
-        const float position = 0.01f;
+        const float position = 0.02f;
         float nearClipPlane = mainCamera.nearClipPlane + position;
 
         targetPositions = new Dictionary<string, Vector3>
@@ -33,52 +32,25 @@ public class Target : MonoBehaviour
             { "BottomLeft", mainCamera.ViewportToWorldPoint(new Vector3(center - offset, offset, nearClipPlane)) },
             { "BottomRight", mainCamera.ViewportToWorldPoint(new Vector3(center + offset, offset, nearClipPlane)) }
         };
+
+        // test
+        GenerateTargets(new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Right", "3" } });
     }
 
-    public Dictionary<string, Vector3> GetTargetPositions()
+    private void GenerateTarget(string targetName, string targetNumber)
     {
-        return targetPositions;
-    }
-
-    private void GenerateTarget(string target, string targetNumber)
-    {
-        if (targetPositions.TryGetValue(target, out Vector3 targetPosition))
+        if (targetPositions.TryGetValue(targetName, out Vector3 targetPosition))
         {
-            // Sprite
-            const float radius = 0.025f;
-            GameObject spriteObject = new("Sprite")
-            {
-                name = "TargetSprite" + targetNumber
-            };
+            // target
+            GameObject target = Instantiate(targetPrefab, targetPosition, Quaternion.identity);
+            target.name = targetName;
+            target.transform.LookAt(mainCamera.transform);
 
-            SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = Sprite.Create(circleTexture.GenerateCircleTexture(), new Rect(0, 0, CircleTexture.textureSize, CircleTexture.textureSize), new Vector2(0.5f, 0.5f), CircleTexture.textureSize);
-            spriteRenderer.color = new Color(1, 1, 1, 1);
-            spriteRenderer.sortingOrder = 0;
-
-            spriteObject.transform.position = targetPosition;
-            spriteObject.transform.localScale = new Vector3(radius, radius, 1);
-            spriteObject.transform.LookAt(mainCamera.transform);
-            spriteObject.tag = "Target";
-
-            // Text
-            GameObject textObject = new("Text")
-            {
-                name = "TargetText" + targetNumber
-            };
-
-            TextMeshPro textMesh = textObject.AddComponent<TextMeshPro>();
-            textMesh.text = targetNumber.ToString();
-            textMesh.fontSize = 2.5f;
-            textMesh.color = new Color(0, 0, 0, 1);
-            textMesh.alignment = TextAlignmentOptions.Center;
-            textMesh.alignment = TextAlignmentOptions.Midline;
-            textMesh.sortingOrder = 1;
-
-            textObject.transform.position = targetPosition;
-            textObject.transform.localScale = new Vector3(0.1f, 0.1f, 1);
-            textObject.transform.rotation = Quaternion.LookRotation(textObject.transform.position - mainCamera.transform.position);
-            textObject.tag = "Target";
+            // text
+            TextMeshProUGUI textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
+            textMeshPro.name = targetName + "Text";
+            textMeshPro.text = targetNumber;
+            textMeshPro.transform.LookAt(mainCamera.transform);
         }
     }
 
@@ -88,13 +60,6 @@ public class Target : MonoBehaviour
         {
             GenerateTarget(targets[i, 0], targets[i, 1]);
         }
-    }
-
-    public void RewriteTargetNumber(string targetNumber, string newTargetNumber)
-    {
-        GameObject targetText = GameObject.Find("TargetText" + targetNumber);
-        targetText.name = "TargetText" + newTargetNumber;
-        targetText.GetComponent<TextMeshPro>().text = newTargetNumber;
     }
 
     public void DestroyTargets()
