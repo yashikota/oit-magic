@@ -43,11 +43,16 @@ public class Target : MonoBehaviour
             target.name = targetName;
             target.transform.LookAt(mainCamera.transform);
 
+            // canvas
+            GameObject canvas = target.transform.GetChild(0).gameObject;
+            canvas.GetComponent<Canvas>().worldCamera = mainCamera;
+
             // text
             TextMeshProUGUI textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
             textMeshPro.name = targetName + "Text";
             textMeshPro.text = targetNumber;
-            textMeshPro.transform.LookAt(mainCamera.transform);
+            textMeshPro.transform.position = targetPositions[targetName];
+            textMeshPro.transform.rotation = Quaternion.LookRotation(textMeshPro.transform.position - mainCamera.transform.position);
         }
     }
 

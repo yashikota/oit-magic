@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
             { "Round2", new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Left", "3" }, { "Right", "4" } } },
             { "Round3", new string[,] { { "Top", "1" }, { "Left", "2" }, { "Bottom", "3" }, { "Right", "4" } } },
             { "Round4", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
-            // Round5, 6は4と同じ
+            { "Round5", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
+            { "Round6", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
             { "Round7", new string[,] { { "Left", "1" }, { "Right", "2" }, { "BottomLeft", "3" }, { "Top", "4" }, { "BottomRight", "5" }} }
         };
 
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
             // next round
             if (count == rounds["Round" + round].GetLength(0) - 1)
             {
+                count = 0;
                 await Task.Delay(1000);
                 Rounds();
             }
