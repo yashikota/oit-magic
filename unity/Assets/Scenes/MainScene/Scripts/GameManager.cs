@@ -7,25 +7,16 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Target target;
     [SerializeField] private UDPManager udpManager;
+    [SerializeField] private Magic magic;
 
     private int round = 0;
     private int count = 1;
-    Dictionary<string, string[,]> rounds;
+    string element;
+    bool[] results;
     List<string> checkedList;
 
     void Start()
     {
-        // rounds
-        rounds = new Dictionary<string, string[,]>
-        {
-            { "Round1", new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Right", "3" } } },
-            { "Round2", new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Left", "3" }, { "Right", "4" } } },
-            { "Round3", new string[,] { { "Top", "1" }, { "Left", "2" }, { "Bottom", "3" }, { "Right", "4" }, {"Top2", "5"} } },
-            { "Round4", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
-            { "Round5", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
-            { "Round6", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
-            { "Round7", new string[,] { { "Left", "1" }, { "Right", "2" }, { "BottomLeft", "3" }, { "Top", "4" }, { "BottomRight", "5" }, {"Left2", "6"}} }
-        };
         checkedList = new List<string>();
 
         Init();
@@ -33,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     private async void Init()
     {
-        await Task.Delay(1000);
+        await Task.Delay(500);
         Rounds(); // round 1
     }
 
@@ -47,16 +38,31 @@ public class GameManager : MonoBehaviour
 
     public async void OnHit(string hitTargetName)
     {
+        if (round == 4 || round == 5 || round == 6)
+        {
+            results = magic.TypeDetect(hitTargetName, count);
+            if (results.Contains(true))
+            {
+                target.ChangeColor(hitTargetName, Color.blue);
+                count++;
+            }
+            else
+            {
+                target.ChangeColor(hitTargetName, Color.red);
+                count = 1;
+            }
+        }
+
         // target is not selected
         if (!checkedList.Any())
         {
             count = 1;
         }
 
-        string firstTargetName = rounds["Round" + round][0, 0];
-        string currentTargetName = rounds["Round" + round][count - 1, 0].Replace("2", "");
-        int targetLength = rounds["Round" + round].GetLength(0);
-        string lastTargetNumber = rounds["Round" + round][targetLength - 1, 1];
+        string firstTargetName = Magic.magics[element][0, 0];
+        string currentTargetName = Magic.magics[element][count - 1, 0].Replace("2", "");
+        int targetLength = Magic.magics[element].GetLength(0);
+        string lastTargetNumber = Magic.magics[element][targetLength - 1, 1];
 
         // start and end are same
         if (targetLength == count + 1 && (round == 3 || round == 7))
@@ -81,6 +87,8 @@ public class GameManager : MonoBehaviour
             // next round
             if (count == targetLength)
             {
+
+
                 count = 1;
                 await Task.Delay(1000);
                 checkedList.Clear();
@@ -94,7 +102,7 @@ public class GameManager : MonoBehaviour
             checkedList.Clear();
 
             await Task.Delay(500);
-            foreach (string key in rounds["Round" + round])
+            foreach (string key in Magic.magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")))
             {
                 target.ChangeColor(key, Color.white);
             }
@@ -113,21 +121,26 @@ public class GameManager : MonoBehaviour
         switch (++round)
         {
             case 1:
-                target.GenerateTargets(rounds["Round1"]);
+                element = "Fire";
+                target.GenerateTargets(Magic.magics[element]);
                 break;
             case 2:
-                target.GenerateTargets(rounds["Round2"]);
+                element = "Aqua";
+                target.GenerateTargets(Magic.magics[element]);
                 break;
             case 3:
-                target.GenerateTargets(rounds["Round3"]);
+                element = "Wind";
+                target.GenerateTargets(Magic.magics[element]);
                 break;
             case 4:
             case 5:
             case 6:
-                target.GenerateTargets(rounds["Round4"]);
+                element = "Free";
+                target.GenerateTargets(Magic.magics[element]);
                 break;
             case 7:
-                target.GenerateTargets(rounds["Round7"]);
+                element = "Lightning";
+                target.GenerateTargets(Magic.magics[element]);
                 break;
             default:
                 break;
