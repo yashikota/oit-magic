@@ -6,13 +6,13 @@ public class Pointer : MonoBehaviour
     private Vector3 initializePosition;
 
     private GameManager gameManager;
-    private UDPReceive udpReceiver;
+    private UDPManager udpManager;
     private Camera mainCamera;
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        udpReceiver = FindObjectOfType<UDPReceive>();
+        udpManager = FindObjectOfType<UDPManager>();
         mainCamera = Camera.main;
 
         SetPosition();
@@ -29,7 +29,7 @@ public class Pointer : MonoBehaviour
 
     private void Update()
     {
-        string coordinateData = udpReceiver.GetCoordinate();
+        string coordinateData = udpManager.GetCoordinate();
         const int attenuationRate = 250;
 
         if (!string.IsNullOrEmpty(coordinateData))

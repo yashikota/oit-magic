@@ -4,9 +4,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-public class UDPReceive : MonoBehaviour
+public class UDPManager : MonoBehaviour
 {
-    const int LOCAL_PORT = 5000;
+    const int receivePort = 5000;
+    const int sendPort = 5001;
     static UdpClient udp;
     Thread thread;
     private string coordinate;
@@ -15,7 +16,7 @@ public class UDPReceive : MonoBehaviour
     {
         udp = new UdpClient();
         udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        udp.Client.Bind(new IPEndPoint(IPAddress.Any, LOCAL_PORT));
+        udp.Client.Bind(new IPEndPoint(IPAddress.Any, receivePort));
 
         thread = new Thread(new ThreadStart(ThreadMethod));
         thread.Start();
@@ -40,5 +41,11 @@ public class UDPReceive : MonoBehaviour
     public string GetCoordinate()
     {
         return coordinate;
+    }
+
+    public void SendReset()
+    {
+        byte[] data = Encoding.UTF8.GetBytes("reset");
+        udp.Send(data, data.Length, "localhost", sendPort);
     }
 }
