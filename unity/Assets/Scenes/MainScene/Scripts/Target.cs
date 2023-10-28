@@ -45,7 +45,7 @@ public class Target : MonoBehaviour
 
     private void GenerateTarget(string targetName, string targetNumber)
     {
-        if (targetPositions.TryGetValue(targetName, out Vector3 targetPosition))
+        if (targetPositions.TryGetValue(targetName, out Vector3 targetPosition) && !targetName.EndsWith("2"))
         {
             GameObject targetPrefab = null;
             if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -94,6 +94,16 @@ public class Target : MonoBehaviour
         if (target != null)
         {
             target.GetComponent<Renderer>().material.color = color;
+        }
+    }
+
+    public void ChangeText(string targetName, string text)
+    {
+        GameObject target = GameObject.Find(targetName);
+        if (target != null)
+        {
+            TextMeshProUGUI textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
+            textMeshPro.text = text;
         }
     }
 
