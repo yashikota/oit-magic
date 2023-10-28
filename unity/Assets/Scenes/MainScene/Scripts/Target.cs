@@ -1,20 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class Target : MonoBehaviour
 {
-    [SerializeField] private GameObject targetPrefab;
+    private AsyncOperationHandle<GameObject> handle;
 
     Camera mainCamera;
     private Dictionary<string, Vector3> targetPositions;
-
 
     void Start()
     {
         mainCamera = Camera.main;
 
+        LoadAsset();
         SetPosition();
+    }
+
+    async void LoadAsset()
+    {
+        handle = Addressables.LoadAssetAsync<GameObject>("TargetPrefab");
+        await handle.Task;
     }
 
     private void SetPosition()
@@ -39,6 +47,12 @@ public class Target : MonoBehaviour
     {
         if (targetPositions.TryGetValue(targetName, out Vector3 targetPosition))
         {
+            GameObject targetPrefab = null;
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                targetPrefab = handle.Result;
+            }
+
             // target
             GameObject target = Instantiate(targetPrefab, targetPosition, Quaternion.identity);
             target.name = targetName;
@@ -80,6 +94,14 @@ public class Target : MonoBehaviour
         if (target != null)
         {
             target.GetComponent<Renderer>().material.color = color;
+        }
+    }
+
+    private void OnDestory()
+    {
+        if (handle.IsValid())
+        {
+            Addressables.Release(handle);
         }
     }
 }
