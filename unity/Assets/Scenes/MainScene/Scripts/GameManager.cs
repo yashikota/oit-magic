@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private Target target;
+    [SerializeField] private Target target;
 
     private int round = 0;
     private int count = 0;
@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        target = FindObjectOfType<Target>();
-
         // rounds
         rounds = new Dictionary<string, string[,]>
         {

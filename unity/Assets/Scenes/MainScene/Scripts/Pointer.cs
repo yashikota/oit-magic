@@ -2,17 +2,15 @@ using UnityEngine;
 
 public class Pointer : MonoBehaviour
 {
-    [SerializeField] GameObject pointerSprite;
-    private Vector3 initializePosition;
+    [SerializeField] private GameObject pointerSprite;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private UDPManager udpManager;
 
-    private GameManager gameManager;
-    private UDPManager udpManager;
     private Camera mainCamera;
+    private Vector3 initializePosition;
 
     private void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
-        udpManager = FindObjectOfType<UDPManager>();
         mainCamera = Camera.main;
 
         SetPosition();
@@ -31,6 +29,7 @@ public class Pointer : MonoBehaviour
     {
         string coordinateData = udpManager.GetCoordinate();
         const int attenuationRate = 250;
+        const float rangeFromCamera = 0.1f;
 
         if (!string.IsNullOrEmpty(coordinateData))
         {
@@ -40,8 +39,9 @@ public class Pointer : MonoBehaviour
                 float x = float.Parse(coordinateParts[0]) / attenuationRate;
                 float y = float.Parse(coordinateParts[1]) / attenuationRate;
 
-                Vector3 position = new Vector3(x, y, 0) + initializePosition;
+                Vector3 position = new Vector3(x, y, rangeFromCamera) + initializePosition;
                 pointerSprite.transform.position = position;
+                pointerSprite.transform.LookAt(mainCamera.transform);
             }
         }
     }

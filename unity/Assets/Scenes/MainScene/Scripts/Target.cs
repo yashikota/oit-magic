@@ -5,6 +5,7 @@ using TMPro;
 public class Target : MonoBehaviour
 {
     [SerializeField] private GameObject targetPrefab;
+
     Camera mainCamera;
     private Dictionary<string, Vector3> targetPositions;
 
