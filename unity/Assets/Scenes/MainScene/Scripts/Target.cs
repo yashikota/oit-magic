@@ -97,7 +97,7 @@ public class Target : MonoBehaviour
         }
     }
 
-    private void OnDestory()
+    void OnApplicationQuit()
     {
         if (handle.IsValid())
         {
