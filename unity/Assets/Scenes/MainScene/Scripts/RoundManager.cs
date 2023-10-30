@@ -88,7 +88,7 @@ public class RoundManager : MonoBehaviour
 
     private string FreeRound()
     {
-        int limit = 4;
+        var limit = 4;
 
         // start and end are same
         if (elements["Wind"] && Count == 4)
@@ -99,10 +99,9 @@ public class RoundManager : MonoBehaviour
         }
 
         // Fire, Aqua, Wind
-        foreach (var key in new List<string>(elements.Keys))
+        foreach (var key in new List<string>(elements.Keys).TakeWhile(key => Count < limit).Where(key => GameManager.Magics[key][Count - 1, 0] != hitTargetName))
         {
-            if (Count >= limit) break;
-            if (GameManager.Magics[key][Count - 1, 0] != hitTargetName) elements[key] = false;
+            elements[key] = false;
         }
 
         if (elements.Any(v => v.Value))
@@ -112,13 +111,10 @@ public class RoundManager : MonoBehaviour
             checkedList.Add(hitTargetName);
 
             if (Count < limit) return null;
-            foreach (var key in new List<string>(elements.Keys))
+            foreach (var key in new List<string>(elements.Keys).Where(key => elements[key]))
             {
-                if (elements[key])
-                {
-                    Reset();
-                    return key;
-                }
+                Reset();
+                return key;
             }
         }
         else
