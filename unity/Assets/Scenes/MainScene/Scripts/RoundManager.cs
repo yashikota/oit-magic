@@ -27,11 +27,11 @@ public class RoundManager : MonoBehaviour
         };
     }
 
-    public string Round(string element, string hitTargetName, int round)
+    public string Round(string _element, string _hitTargetName, int _round)
     {
-        this.element = element;
-        this.hitTargetName = hitTargetName;
-        this.round = round;
+        element = _element;
+        hitTargetName = _hitTargetName;
+        round = _round;
 
         // target is not selected
         if (!checkedList.Any()) Count = 1;
@@ -41,14 +41,14 @@ public class RoundManager : MonoBehaviour
         lastTargetNumber = GameManager.Magics[element][targetLength - 1, 1];
 
         // already selected
-        if (checkedList.Contains(hitTargetName))
-        {
-            Count--;
-            return null;
-        }
+        if (checkedList.Contains(hitTargetName)) { Count--; return null; }
 
-        if (round is 1 or 2 or 3 or 7) return NormalRound();
-        else return FreeRound();
+        return IsNormalRound() ? NormalRound() : FreeRound();
+    }
+
+    private bool IsNormalRound()
+    {
+        return round is 1 or 2 or 3 or 7;
     }
 
     private string NormalRound()
@@ -77,7 +77,10 @@ public class RoundManager : MonoBehaviour
             Target.ChangeColor(hitTargetName, Color.red);
             Reset();
 
-            foreach (var key in GameManager.Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")).Except(checkedList))
+            foreach (var key in GameManager.Magics[element].Cast<string>()
+                .Where((v, i) => i % 2 == 0)
+                .Select(v => v.Replace("2", ""))
+                .Except(checkedList))
             {
                 Target.ChangeColor(key, Color.white);
             }
@@ -99,7 +102,9 @@ public class RoundManager : MonoBehaviour
         }
 
         // Fire, Aqua, Wind
-        foreach (var key in new List<string>(elements.Keys).TakeWhile(key => Count < limit).Where(key => GameManager.Magics[key][Count - 1, 0] != hitTargetName))
+        foreach (var key in new List<string>(elements.Keys)
+            .TakeWhile(key => Count < limit)
+            .Where(key => GameManager.Magics[key][Count - 1, 0] != hitTargetName))
         {
             elements[key] = false;
         }
@@ -121,7 +126,9 @@ public class RoundManager : MonoBehaviour
         {
             Target.ChangeColor(hitTargetName, Color.red);
             Reset();
-            foreach (var key in GameManager.Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")).Except(checkedList))
+            foreach (var key in GameManager.Magics[element].Cast<string>()
+                .Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", ""))
+                .Except(checkedList))
             {
                 Target.ChangeColor(key, Color.white);
             }
