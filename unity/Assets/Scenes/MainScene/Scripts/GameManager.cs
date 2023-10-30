@@ -6,20 +6,44 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Target target;
-    [SerializeField] private UDPManager udpManager;
-    [SerializeField] private Magic magic;
+    [SerializeField] private Attack attack;
+    [SerializeField] private RoundManager roundManager;
 
     private int round = 0;
     private int count = 1;
-    string element;
-    bool[] results;
-    List<string> checkedList;
+    private string element;
+    private List<string> checkedList;
 
-    void Start()
+    public static Dictionary<string, string[,]> Magics;
+    public static Dictionary<string, bool> Elements;
+
+    private void Start()
     {
+        Init();
+
         checkedList = new List<string>();
 
-        Init();
+        Magics = new Dictionary<string, string[,]>
+        {
+            { "Fire", new string[,] { { "Left", "1" }, { "Top", "2" }, { "Bottom", "3" }, {"Right", "4"} } },
+            { "Aqua", new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Left", "3" }, { "Right", "4" } } },
+            { "Wind", new string[,] { { "Top", "1" }, { "Left", "2" }, { "Bottom", "3" }, { "Right", "4" }, {"Top2", "5"} } },
+            { "Lightning", new string[,] { { "Left", "1" }, { "Right", "2" }, { "BottomLeft", "3" }, { "Top", "4" }, { "BottomRight", "5" }, {"Left2", "6"}} },
+            { "Free", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
+        };
+
+        Elements = new Dictionary<string, bool> {
+            { "Fire", true },
+            { "Aqua", true },
+            { "Wind", true },
+        };
+    }
+
+    public void Reset()
+    {
+        Elements["Fire"] = true;
+        Elements["Aqua"] = true;
+        Elements["Wind"] = true;
     }
 
     private async void Init()
@@ -28,84 +52,47 @@ public class GameManager : MonoBehaviour
         Rounds(); // round 1
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            udpManager.SendReset();
+            UDPManager.SendReset();
         }
     }
 
-    public async void OnHit(string hitTargetName)
+    public async Task OnHitAsync(string hitTargetName)
     {
-        if (round == 4 || round == 5 || round == 6)
+        var result = await roundManager.Round(element, hitTargetName, round, count, checkedList);
+
+        switch (result)
         {
-            results = magic.TypeDetect(hitTargetName, count);
-            if (results.Contains(true))
-            {
-                target.ChangeColor(hitTargetName, Color.blue);
-                count++;
-            }
-            else
-            {
-                target.ChangeColor(hitTargetName, Color.red);
+            case null:
+                return;
+            case "True":
+                Target.ChangeColor(hitTargetName, Color.blue);
+                checkedList.Add(hitTargetName);
+                break;
+            case "False":
+                Target.ChangeColor(hitTargetName, Color.red);
                 count = 1;
-            }
-        }
+                checkedList.Clear();
 
-        // target is not selected
-        if (!checkedList.Any())
-        {
-            count = 1;
-        }
+                await Task.Delay(500);
+                foreach (var key in Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")).Except(checkedList))
+                {
+                    Target.ChangeColor(key, Color.white);
+                }
 
-        string firstTargetName = Magic.magics[element][0, 0];
-        string currentTargetName = Magic.magics[element][count - 1, 0].Replace("2", "");
-        int targetLength = Magic.magics[element].GetLength(0);
-        string lastTargetNumber = Magic.magics[element][targetLength - 1, 1];
-
-        // start and end are same
-        if (targetLength == count + 1 && (round == 3 || round == 7))
-        {
-            checkedList.Remove(firstTargetName);
-            target.ChangeColor(firstTargetName, Color.white);
-            target.ChangeText(firstTargetName, lastTargetNumber);
-        }
-
-        // already selected
-        if (checkedList.Contains(hitTargetName))
-        {
-            count--;
-            return;
-        }
-
-        if (hitTargetName == currentTargetName)
-        {
-            target.ChangeColor(hitTargetName, Color.blue);
-            checkedList.Add(hitTargetName);
-
-            // next round
-            if (count == targetLength)
-            {
-
-
+                Reset();
+                break;
+            default:
+                // Fire, Aqua, Wind, Lightning
+                attack.Type(result);
                 count = 1;
                 await Task.Delay(1000);
                 checkedList.Clear();
                 Rounds();
-            }
-        }
-        else
-        {
-            target.ChangeColor(hitTargetName, Color.red);
-            count = 1;
-            checkedList.Clear();
-
-            await Task.Delay(500);
-            foreach (string key in Magic.magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")))
-            {
-                target.ChangeColor(key, Color.white);
-            }
+                break;
         }
     }
 
@@ -116,31 +103,31 @@ public class GameManager : MonoBehaviour
 
     private void Rounds()
     {
-        target.DestroyTargets();
+        Target.DestroyTargets();
 
         switch (++round)
         {
             case 1:
                 element = "Fire";
-                target.GenerateTargets(Magic.magics[element]);
+                target.GenerateTargets(Magics[element]);
                 break;
             case 2:
                 element = "Aqua";
-                target.GenerateTargets(Magic.magics[element]);
+                target.GenerateTargets(Magics[element]);
                 break;
             case 3:
                 element = "Wind";
-                target.GenerateTargets(Magic.magics[element]);
+                target.GenerateTargets(Magics[element]);
                 break;
             case 4:
             case 5:
             case 6:
                 element = "Free";
-                target.GenerateTargets(Magic.magics[element]);
+                target.GenerateTargets(Magics[element]);
                 break;
             case 7:
                 element = "Lightning";
-                target.GenerateTargets(Magic.magics[element]);
+                target.GenerateTargets(Magics[element]);
                 break;
             default:
                 break;

@@ -8,10 +8,10 @@ public class Target : MonoBehaviour
 {
     private AsyncOperationHandle<GameObject> handle;
 
-    Camera mainCamera;
+    private Camera mainCamera;
     private Dictionary<string, Vector3> targetPositions;
 
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main;
 
@@ -19,7 +19,7 @@ public class Target : MonoBehaviour
         SetPosition();
     }
 
-    async void LoadAsset()
+    private async void LoadAsset()
     {
         handle = Addressables.LoadAssetAsync<GameObject>("TargetPrefab");
         await handle.Task;
@@ -30,7 +30,7 @@ public class Target : MonoBehaviour
         const float center = 0.5f;
         const float offset = 0.15f;
         const float position = 0.02f;
-        float nearClipPlane = mainCamera.nearClipPlane + position;
+        var nearClipPlane = mainCamera.nearClipPlane + position;
 
         targetPositions = new Dictionary<string, Vector3>
         {
@@ -45,69 +45,67 @@ public class Target : MonoBehaviour
 
     private void GenerateTarget(string targetName, string targetNumber)
     {
-        if (targetPositions.TryGetValue(targetName, out Vector3 targetPosition) && !targetName.EndsWith("2"))
+        if (!targetPositions.TryGetValue(targetName, out var targetPosition) || targetName.EndsWith("2")) return;
+        
+        GameObject targetPrefab = null;
+        if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            GameObject targetPrefab = null;
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                targetPrefab = handle.Result;
-            }
-
-            // target
-            GameObject target = Instantiate(targetPrefab, targetPosition, Quaternion.identity);
-            target.name = targetName;
-            target.transform.LookAt(mainCamera.transform);
-
-            // canvas
-            GameObject canvas = target.transform.GetChild(0).gameObject;
-            canvas.GetComponent<Canvas>().worldCamera = mainCamera;
-
-            // text
-            TextMeshProUGUI textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
-            textMeshPro.name = targetName + "Text";
-            textMeshPro.text = targetNumber;
-            textMeshPro.transform.position = targetPositions[targetName];
-            textMeshPro.transform.rotation = Quaternion.LookRotation(textMeshPro.transform.position - mainCamera.transform.position);
+            targetPrefab = handle.Result;
         }
+
+        // target
+        var target = Instantiate(targetPrefab, targetPosition, Quaternion.identity);
+        target.name = targetName;
+        target.transform.LookAt(mainCamera.transform);
+
+        // canvas
+        var canvas = target.transform.GetChild(0).gameObject;
+        canvas.GetComponent<Canvas>().worldCamera = mainCamera;
+
+        // text
+        var textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
+        textMeshPro.name = targetName + "Text";
+        textMeshPro.text = targetNumber;
+        textMeshPro.transform.position = targetPositions[targetName];
+        textMeshPro.transform.rotation = Quaternion.LookRotation(textMeshPro.transform.position - mainCamera.transform.position);
     }
 
     public void GenerateTargets(string[,] targets)
     {
-        for (int i = 0; i < targets.GetLength(0); i++)
+        for (var i = 0; i < targets.GetLength(0); i++)
         {
             GenerateTarget(targets[i, 0], targets[i, 1]);
         }
     }
 
-    public void DestroyTargets()
+    public static void DestroyTargets()
     {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Target");
-        foreach (GameObject target in targets)
+        var targets = GameObject.FindGameObjectsWithTag("Target");
+        foreach (var target in targets)
         {
             Destroy(target);
         }
     }
 
-    public void ChangeColor(string targetName, Color color)
+    public static void ChangeColor(string targetName, Color color)
     {
-        GameObject target = GameObject.Find(targetName);
+        var target = GameObject.Find(targetName);
         if (target != null)
         {
             target.GetComponent<Renderer>().material.color = color;
         }
     }
 
-    public void ChangeText(string targetName, string text)
+    public static void ChangeText(string targetName, string text)
     {
-        GameObject target = GameObject.Find(targetName);
-        if (target != null)
-        {
-            TextMeshProUGUI textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
-            textMeshPro.text = text;
-        }
+        var target = GameObject.Find(targetName);
+        if (target == null) return;
+        
+        var textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
+        textMeshPro.text = text;
     }
 
-    void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
         if (handle.IsValid())
         {
