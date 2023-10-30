@@ -45,18 +45,18 @@ public class Attack : MonoBehaviour
 
     private void Fire()
     {
-        var flameshrowerPrefab = magics[0];
-        var flameshrower = Instantiate(flameshrowerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        var flameShowerPrefab = magics[0];
+        var flameShower = Instantiate(flameShowerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
-        if (flameshrower.TryGetComponent<ParticleSystem>(out var flameshrowerParticle))
+        if (flameShower.TryGetComponent<ParticleSystem>(out var flameShowerParticle))
         {
-            flameshrowerParticle.Play();
-            var duration = flameshrowerParticle.main.duration;
-            Destroy(flameshrower, duration / 2);
+            flameShowerParticle.Play();
+            var duration = flameShowerParticle.main.duration;
+            Destroy(flameShower, duration / 2);
         }
         else
         {
-            Destroy(flameshrower);
+            Destroy(flameShower);
         }
     }
 
@@ -96,18 +96,18 @@ public class Attack : MonoBehaviour
 
     private void Lightning()
     {
-        var LightningBoltPrefab = magics[1];
-        var LightningBolt = Instantiate(LightningBoltPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        var lightningBoltPrefab = magics[1];
+        var lightningBolt = Instantiate(lightningBoltPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
-        if (LightningBolt.TryGetComponent<ParticleSystem>(out var LightningBoltParticle))
+        if (lightningBolt.TryGetComponent<ParticleSystem>(out var lightningBoltParticle))
         {
-            LightningBoltParticle.Play();
-            var duration = LightningBoltParticle.main.duration;
-            Destroy(LightningBolt, duration);
+            lightningBoltParticle.Play();
+            var duration = lightningBoltParticle.main.duration;
+            Destroy(lightningBolt, duration);
         }
         else
         {
-            Destroy(LightningBolt);
+            Destroy(lightningBolt);
         }
     }
 }
