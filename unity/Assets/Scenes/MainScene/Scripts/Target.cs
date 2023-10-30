@@ -46,12 +46,10 @@ public class Target : MonoBehaviour
     private void GenerateTarget(string targetName, string targetNumber)
     {
         if (!targetPositions.TryGetValue(targetName, out var targetPosition) || targetName.EndsWith("2")) return;
-        
+
         GameObject targetPrefab = null;
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            targetPrefab = handle.Result;
-        }
+        if (handle.Status == AsyncOperationStatus.Succeeded) targetPrefab = handle.Result;
+        if (targetPrefab == null) return;
 
         // target
         var target = Instantiate(targetPrefab, targetPosition, Quaternion.identity);
@@ -100,7 +98,7 @@ public class Target : MonoBehaviour
     {
         var target = GameObject.Find(targetName);
         if (target == null) return;
-        
+
         var textMeshPro = target.GetComponentInChildren<TextMeshProUGUI>();
         textMeshPro.text = text;
     }

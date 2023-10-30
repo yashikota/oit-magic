@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,18 +9,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RoundManager roundManager;
 
     private int round = 0;
-    private int count = 1;
     private string element;
-    private List<string> checkedList;
 
     public static Dictionary<string, string[,]> Magics;
-    public static Dictionary<string, bool> Elements;
 
     private void Start()
     {
         Init();
-
-        checkedList = new List<string>();
 
         Magics = new Dictionary<string, string[,]>
         {
@@ -31,19 +25,6 @@ public class GameManager : MonoBehaviour
             { "Lightning", new string[,] { { "Left", "1" }, { "Right", "2" }, { "BottomLeft", "3" }, { "Top", "4" }, { "BottomRight", "5" }, {"Left2", "6"}} },
             { "Free", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
         };
-
-        Elements = new Dictionary<string, bool> {
-            { "Fire", true },
-            { "Aqua", true },
-            { "Wind", true },
-        };
-    }
-
-    public void Reset()
-    {
-        Elements["Fire"] = true;
-        Elements["Aqua"] = true;
-        Elements["Wind"] = true;
     }
 
     private async void Init()
@@ -60,45 +41,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public async Task OnHitAsync(string hitTargetName)
+    public void OnHit(string hitTargetName)
     {
-        var result = await roundManager.Round(element, hitTargetName, round, count, checkedList);
-
-        switch (result)
+        var result = roundManager.Round(element, hitTargetName, round);
+        if (result == null) return;
+        else
         {
-            case null:
-                return;
-            case "True":
-                Target.ChangeColor(hitTargetName, Color.blue);
-                checkedList.Add(hitTargetName);
-                break;
-            case "False":
-                Target.ChangeColor(hitTargetName, Color.red);
-                count = 1;
-                checkedList.Clear();
-
-                await Task.Delay(500);
-                foreach (var key in Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")).Except(checkedList))
-                {
-                    Target.ChangeColor(key, Color.white);
-                }
-
-                Reset();
-                break;
-            default:
-                // Fire, Aqua, Wind, Lightning
-                attack.Type(result);
-                count = 1;
-                await Task.Delay(1000);
-                checkedList.Clear();
-                Rounds();
-                break;
+            attack.Type(result);
+            Rounds();
         }
     }
 
     public void IncrementCount()
     {
-        count++;
+        RoundManager.Count++;
     }
 
     private void Rounds()

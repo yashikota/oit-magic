@@ -44,12 +44,12 @@ public class Pointer : MonoBehaviour
         pointerSprite.transform.LookAt(mainCamera.transform);
     }
 
-    private async void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag("Target")) return;
 
         var targetName = other.gameObject.name;
-        await gameManager.OnHitAsync(targetName);
+        gameManager.OnHit(targetName);
     }
 
     private void OnTriggerExit(Collider other)

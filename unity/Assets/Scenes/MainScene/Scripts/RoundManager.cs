@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class RoundManager : MonoBehaviour
@@ -8,110 +7,140 @@ public class RoundManager : MonoBehaviour
     private string element;
     private string hitTargetName;
     private int round;
-    private int count = 1;
+    public static int Count = 1;
     private List<string> checkedList;
+    private Dictionary<string, bool> elements;
 
-    string firstTargetName;
-    string currentTargetName;
-    int targetLength;
-    string lastTargetNumber;
+    private string firstTargetName;
+    private string currentTargetName;
+    private int targetLength;
+    private string lastTargetNumber;
 
-    public async Task<string> Round(string element, string hitTargetName, int round, int count, List<string> checkedList)
+    private void Start()
+    {
+        checkedList = new List<string>();
+
+        elements = new Dictionary<string, bool> {
+            { "Fire", true },
+            { "Aqua", true },
+            { "Wind", true },
+        };
+    }
+
+    public string Round(string element, string hitTargetName, int round)
     {
         this.element = element;
         this.hitTargetName = hitTargetName;
         this.round = round;
-        this.count = count;
-        this.checkedList = checkedList;
 
         // target is not selected
-        if (!checkedList.Any())
-        {
-            count = 1;
-        }
+        if (!checkedList.Any()) Count = 1;
 
         firstTargetName = GameManager.Magics[element][0, 0];
-        currentTargetName = GameManager.Magics[element][count - 1, 0].Replace("2", "");
         targetLength = GameManager.Magics[element].GetLength(0);
         lastTargetNumber = GameManager.Magics[element][targetLength - 1, 1];
 
-        if (round is 1 or 2 or 3 or 7)
+        // already selected
+        if (checkedList.Contains(hitTargetName))
         {
-            return await NormalRound();
+            Count--;
+            return null;
         }
-        else
-        {
-            return FreeRound();
-        }
+
+        if (round is 1 or 2 or 3 or 7) return NormalRound();
+        else return FreeRound();
     }
 
-    // Round 1, 2, 3, 7
-    private async Task<string> NormalRound()
+    private string NormalRound()
     {
+        currentTargetName = GameManager.Magics[element][Count - 1, 0].Replace("2", "");
+
         // start and end are same
-        if (targetLength == count + 1 && (round == 3 || round == 7))
+        if (targetLength == Count + 1 && round is 3 or 7)
         {
             checkedList.Remove(firstTargetName);
             Target.ChangeColor(firstTargetName, Color.white);
             Target.ChangeText(firstTargetName, lastTargetNumber);
         }
 
-        // already selected
-        if (checkedList.Contains(hitTargetName))
-        {
-            count--;
-            return "None";
-        }
-
         if (hitTargetName == currentTargetName)
         {
             Target.ChangeColor(hitTargetName, Color.blue);
             checkedList.Add(hitTargetName);
+            if (Count != targetLength) return null;
+            Reset();
 
-            return "True";
+            return element;
         }
         else
         {
             Target.ChangeColor(hitTargetName, Color.red);
-            count = 1;
-            checkedList.Clear();
+            Reset();
 
-            await Task.Delay(500);
-            foreach (string key in GameManager.Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")))
+            foreach (var key in GameManager.Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")).Except(checkedList))
             {
                 Target.ChangeColor(key, Color.white);
             }
 
-            return "False";
+            return null;
         }
     }
 
     private string FreeRound()
     {
-        // Fire, Aqua, Windの判定
-        foreach (var key in new List<string>(GameManager.Elements.Keys))
+        int limit = 4;
+
+        // start and end are same
+        if (elements["Wind"] && Count == 4)
         {
-            if (GameManager.Magics[key][count - 1, 0] == hitTargetName)
+            checkedList.Remove(firstTargetName);
+            Target.ChangeColor(firstTargetName, Color.white);
+            Target.ChangeText(firstTargetName, lastTargetNumber);
+        }
+
+        // Fire, Aqua, Wind
+        foreach (var key in new List<string>(elements.Keys))
+        {
+            if (Count >= limit) break;
+            if (GameManager.Magics[key][Count - 1, 0] != hitTargetName) elements[key] = false;
+        }
+
+        if (elements.Any(v => v.Value))
+        {
+            if (elements["Wind"]) limit = 5;
+            Target.ChangeColor(hitTargetName, Color.blue);
+            checkedList.Add(hitTargetName);
+
+            if (Count < limit) return null;
+            foreach (var key in new List<string>(elements.Keys))
             {
-                GameManager.Elements[key] &= true;
+                if (elements[key])
+                {
+                    Reset();
+                    return key;
+                }
             }
-            else
+        }
+        else
+        {
+            Target.ChangeColor(hitTargetName, Color.red);
+            Reset();
+            foreach (var key in GameManager.Magics[element].Cast<string>().Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", "")).Except(checkedList))
             {
-                GameManager.Elements[key] = false;
+                Target.ChangeColor(key, Color.white);
             }
         }
 
-        // foreach (string key in elements.Keys)
-        // {
-        //     Debug.Log(key + ": " + elements[key]);
-        // }
+        return null;
+    }
 
-        // 判定
-        if (count != 4) return (GameManager.Elements["Fire"] || GameManager.Elements["Aqua"] || GameManager.Elements["Wind"]) ? "True" : "False";
+    private void Reset()
+    {
+        Count = 1;
+        checkedList.Clear();
 
-        if (GameManager.Elements["Fire"]) { return "Fire"; }
-        else if (GameManager.Elements["Aqua"]) { return "Aqua"; }
-        else if (GameManager.Elements["Wind"]) { return "Wind"; }
-        else { return "False"; }
+        elements["Fire"] = true;
+        elements["Aqua"] = true;
+        elements["Wind"] = true;
     }
 }
