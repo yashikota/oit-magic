@@ -51,5 +51,10 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "unity.sln"
+    "dotnet.defaultSolution": "unity.sln",
+    "cSpell.words": [
+        "Addressables",
+        "Behaviour",
+        "UGUI"
+    ]
 }
