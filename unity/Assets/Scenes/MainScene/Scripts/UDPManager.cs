@@ -6,34 +6,34 @@ using System.Threading;
 
 public class UDPManager : MonoBehaviour
 {
-    const int receivePort = 5000;
-    const int sendPort = 5001;
-    static UdpClient udp;
-    Thread thread;
+    private const int ReceivePort = 5000;
+    private const int SendPort = 5001;
+    private static UdpClient _udp;
+    private Thread thread;
     private string coordinate;
 
-    void Start()
+    private void Start()
     {
-        udp = new UdpClient();
-        udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        udp.Client.Bind(new IPEndPoint(IPAddress.Any, receivePort));
+        _udp = new UdpClient();
+        _udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        _udp.Client.Bind(new IPEndPoint(IPAddress.Any, ReceivePort));
 
         thread = new Thread(new ThreadStart(ThreadMethod));
         thread.Start();
     }
 
-    void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
         thread.Abort();
-        udp.Close();
+        _udp.Close();
     }
 
     private void ThreadMethod()
     {
         while (true)
         {
-            IPEndPoint remoteEP = null;
-            byte[] data = udp.Receive(ref remoteEP);
+            IPEndPoint remoteEp = null;
+            var data = _udp.Receive(ref remoteEp);
             coordinate = Encoding.UTF8.GetString(data);
         }
     }
@@ -43,9 +43,9 @@ public class UDPManager : MonoBehaviour
         return coordinate;
     }
 
-    public void SendReset()
+    public static void SendReset()
     {
-        byte[] data = Encoding.UTF8.GetBytes("reset");
-        udp.Send(data, data.Length, "localhost", sendPort);
+        var data = Encoding.UTF8.GetBytes("reset");
+        _udp.Send(data, data.Length, "localhost", SendPort);
     }
 }

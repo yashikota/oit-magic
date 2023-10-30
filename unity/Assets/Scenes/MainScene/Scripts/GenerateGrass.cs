@@ -4,7 +4,7 @@ public class GenerateGrass : MonoBehaviour
 {
     [SerializeField] GameObject grassPrefab;
 
-    void Start()
+    private void Start()
     {
         for (float x = -100; x <= 100; x += 0.75f)
         {

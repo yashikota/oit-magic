@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
     private float oldSeconds;
     private TextMeshProUGUI timerText;
 
-    void Start()
+    private void Start()
     {
         minute = 0;
         seconds = 0f;
@@ -18,7 +18,7 @@ public class Timer : MonoBehaviour
         timerText = GetComponent<TextMeshProUGUI>();
     }
 
-    void Update()
+    public void Update()
     {
         seconds += Time.deltaTime;
         if (seconds >= 60f)
