@@ -9,10 +9,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RoundManager roundManager;
     [SerializeField] private PlayLog playLog;
 
-    public static int round = 0;
+    private bool isTitle = true;
     private bool isGameOver = false;
+    private bool isGameClear = false;
+
+    public static int round = 0;
     private string element;
-    private int beforeHP;
+
+    private List<GameObject> hpList = new();
+    private int beforeHP = 3;
     private int currentHP = 3;
 
     public static Dictionary<string, string[,]> Magics;
@@ -78,7 +83,10 @@ public class GameManager : MonoBehaviour
         if (currentHP == beforeHP) return;
         if (currentHP == 0) isGameOver = true;
 
-        Destroy(GameObject.Find("HP" + (currentHP + 1)));
+        var hp = GameObject.Find("HP" + (currentHP + 1));
+        hpList.Add(hp);
+        hp.SetActive(false);
+
         beforeHP = currentHP;
     }
 
@@ -87,9 +95,34 @@ public class GameManager : MonoBehaviour
         currentHP--;
     }
 
+    public bool IsTitle()
+    {
+        return isTitle;
+    }
+
+    public void SetTitle(bool isTitle)
+    {
+        this.isTitle = isTitle;
+    }
+
+    public bool IsGameClear()
+    {
+        return isGameClear;
+    }
+
+    public void SetGameClear(bool isGameClear)
+    {
+        this.isGameClear = isGameClear;
+    }
+
     public bool IsGameOver()
     {
         return isGameOver;
+    }
+
+    public void SetGameOver(bool isGameOver)
+    {
+        this.isGameOver = isGameOver;
     }
 
     private void Rounds()
@@ -121,7 +154,22 @@ public class GameManager : MonoBehaviour
                 target.GenerateTargets(Magics[element]);
                 break;
             default:
+                isGameClear = true;
                 break;
+        }
+    }
+
+    public void Reset()
+    {
+        round = 0;
+        currentHP = 3;
+        beforeHP = 3;
+        isGameOver = false;
+        isGameClear = false;
+
+        foreach (var hp in hpList)
+        {
+            hp.SetActive(true);
         }
     }
 }
