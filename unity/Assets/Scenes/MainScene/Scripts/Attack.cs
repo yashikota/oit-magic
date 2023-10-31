@@ -45,18 +45,19 @@ public class Attack : MonoBehaviour
 
     private void Fire()
     {
-        var flameShowerPrefab = magics[0];
-        var flameShower = Instantiate(flameShowerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        var ExplosionPrefab = magics[4];
+        var Explosion = Instantiate(ExplosionPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Explosion.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
 
-        if (flameShower.TryGetComponent<ParticleSystem>(out var flameShowerParticle))
+        if (Explosion.TryGetComponent<ParticleSystem>(out var ExplosionParticle))
         {
-            flameShowerParticle.Play();
-            var duration = flameShowerParticle.main.duration;
-            Destroy(flameShower, duration / 2);
+            ExplosionParticle.Play();
+            var duration = ExplosionParticle.main.duration;
+            Destroy(Explosion, duration);
         }
         else
         {
-            Destroy(flameShower);
+            Destroy(Explosion);
         }
     }
 
@@ -64,6 +65,7 @@ public class Attack : MonoBehaviour
     {
         var waterTornadoPrefab = magics[2];
         var waterTornado = Instantiate(waterTornadoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        waterTornado.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
         if (waterTornado.TryGetComponent<ParticleSystem>(out var waterTornadoParticle))
         {
@@ -81,6 +83,7 @@ public class Attack : MonoBehaviour
     {
         var tornadoLoopPrefab = magics[3];
         var tornadoLoop = Instantiate(tornadoLoopPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        tornadoLoop.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
 
         if (tornadoLoop.TryGetComponent<ParticleSystem>(out var tornadoLoopParticle))
         {
@@ -98,6 +101,7 @@ public class Attack : MonoBehaviour
     {
         var lightningBoltPrefab = magics[1];
         var lightningBolt = Instantiate(lightningBoltPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        lightningBolt.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
         if (lightningBolt.TryGetComponent<ParticleSystem>(out var lightningBoltParticle))
         {
