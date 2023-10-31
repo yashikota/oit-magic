@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Pointer
   - Target
+  - Title
+  - GameClear
+  - GameOver
+  - UI
   layers:
   - Default
   - TransparentFX
