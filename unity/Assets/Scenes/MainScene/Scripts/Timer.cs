@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class Timer : MonoBehaviour
 
     private float oldSeconds;
     private TextMeshProUGUI timerText;
+    private bool isStop = false;
 
     private void Start()
     {
@@ -18,8 +18,20 @@ public class Timer : MonoBehaviour
         timerText = GetComponent<TextMeshProUGUI>();
     }
 
+    public void Stop()
+    {
+        isStop = true;
+    }
+
+    public float GetTime()
+    {
+        return minute * 60 + seconds;
+    }
+
     public void Update()
     {
+        if (isStop) return;
+
         seconds += Time.deltaTime;
         if (seconds >= 60f)
         {

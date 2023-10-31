@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Target target;
     [SerializeField] private Attack attack;
     [SerializeField] private RoundManager roundManager;
+    [SerializeField] private PlayLog playLog;
 
-    private int round = 0;
+    public static int round = 0;
+    public static bool isGameOver = false;
     private string element;
 
     public static Dictionary<string, string[,]> Magics;
@@ -43,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     public void OnHit(string hitTargetName)
     {
-        var result = roundManager.Round(element, hitTargetName, round);
+        var result = roundManager.Round(element, hitTargetName);
         if (result == null) return;
         else
         {

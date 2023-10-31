@@ -6,7 +6,6 @@ public class RoundManager : MonoBehaviour
 {
     private string element;
     private string hitTargetName;
-    private int round;
     public static int Count = 1;
     private List<string> checkedList;
     private Dictionary<string, bool> elements;
@@ -27,11 +26,10 @@ public class RoundManager : MonoBehaviour
         };
     }
 
-    public string Round(string _element, string _hitTargetName, int _round)
+    public string Round(string elem, string target)
     {
-        element = _element;
-        hitTargetName = _hitTargetName;
-        round = _round;
+        element = elem;
+        hitTargetName = target;
 
         // target is not selected
         if (!checkedList.Any()) Count = 1;
@@ -48,7 +46,7 @@ public class RoundManager : MonoBehaviour
 
     private bool IsNormalRound()
     {
-        return round is 1 or 2 or 3 or 7;
+        return GameManager.round is 1 or 2 or 3 or 7;
     }
 
     private string NormalRound()
@@ -56,7 +54,7 @@ public class RoundManager : MonoBehaviour
         currentTargetName = GameManager.Magics[element][Count - 1, 0].Replace("2", "");
 
         // start and end are same
-        if (targetLength == Count + 1 && round is 3 or 7)
+        if (targetLength == Count + 1 && GameManager.round is 3 or 7)
         {
             checkedList.Remove(firstTargetName);
             Target.ChangeColor(firstTargetName, Color.white);
