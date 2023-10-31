@@ -10,8 +10,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayLog playLog;
 
     public static int round = 0;
-    public static bool isGameOver = false;
+    private bool isGameOver = false;
     private string element;
+    private int beforeHP;
+    private int currentHP = 3;
 
     public static Dictionary<string, string[,]> Magics;
 
@@ -35,12 +37,24 @@ public class GameManager : MonoBehaviour
         Rounds(); // round 1
     }
 
+    public int GetRound()
+    {
+        return round;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             UDPManager.SendReset();
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            DecreaseHP();
+        }
+
+        HP();
     }
 
     public void OnHit(string hitTargetName)
@@ -57,6 +71,25 @@ public class GameManager : MonoBehaviour
     public void IncrementCount()
     {
         RoundManager.Count++;
+    }
+
+    private void HP()
+    {
+        if (currentHP == beforeHP) return;
+        if (currentHP == 0) isGameOver = true;
+
+        Destroy(GameObject.Find("HP" + (currentHP + 1)));
+        beforeHP = currentHP;
+    }
+
+    private void DecreaseHP()
+    {
+        currentHP--;
+    }
+
+    public bool IsGameOver()
+    {
+        return isGameOver;
     }
 
     private void Rounds()
