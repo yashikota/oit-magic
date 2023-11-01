@@ -41,7 +41,11 @@ public class GameManager : MonoBehaviour
     private async void Init()
     {
         await Task.Delay(500);
-        Rounds(); // round 1
+    }
+
+    public void GameStart()
+    {
+        Rounds();
     }
 
     public int GetRound()

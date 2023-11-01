@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Scene : MonoBehaviour
@@ -18,11 +19,17 @@ public class Scene : MonoBehaviour
         }
         else if (gameManager.IsGameClear())
         {
+            var targets = GameObject.FindGameObjectsWithTag("Target");
+            targets.ToList().ForEach(target => target.SetActive(false));
+
             UI.SetActive(false);
             gameClear.SetActive(true);
         }
         else if (gameManager.IsGameOver())
         {
+            var targets = GameObject.FindGameObjectsWithTag("Target");
+            targets.ToList().ForEach(target => target.SetActive(false));
+
             UI.SetActive(false);
             gameOver.SetActive(true);
         }
@@ -33,6 +40,7 @@ public class Scene : MonoBehaviour
         title.SetActive(false);
         UI.SetActive(true);
         gameManager.SetTitle(false);
+        gameManager.GameStart();
     }
 
     public void OnClickEnd()
