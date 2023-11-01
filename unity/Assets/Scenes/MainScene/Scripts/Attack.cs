@@ -45,7 +45,7 @@ public class Attack : MonoBehaviour
 
     private void Fire()
     {
-        var ExplosionPrefab = magics[4];
+        var ExplosionPrefab = magics[0];
         var Explosion = Instantiate(ExplosionPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Explosion.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
 
@@ -63,7 +63,7 @@ public class Attack : MonoBehaviour
 
     private void Aqua()
     {
-        var waterTornadoPrefab = magics[2];
+        var waterTornadoPrefab = magics[1];
         var waterTornado = Instantiate(waterTornadoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         waterTornado.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
@@ -81,7 +81,7 @@ public class Attack : MonoBehaviour
 
     private void Wind()
     {
-        var tornadoLoopPrefab = magics[3];
+        var tornadoLoopPrefab = magics[2];
         var tornadoLoop = Instantiate(tornadoLoopPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         tornadoLoop.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
 
@@ -99,7 +99,7 @@ public class Attack : MonoBehaviour
 
     private void Lightning()
     {
-        var lightningBoltPrefab = magics[1];
+        var lightningBoltPrefab = magics[3];
         var lightningBolt = Instantiate(lightningBoltPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         lightningBolt.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 

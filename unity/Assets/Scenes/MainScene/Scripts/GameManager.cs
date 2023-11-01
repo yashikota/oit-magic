@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Target target;
     [SerializeField] private Attack attack;
     [SerializeField] private RoundManager roundManager;
+    [SerializeField] private ShakeCamera shakeCamera;
     [SerializeField] private PlayLog playLog;
 
     private bool isTitle = true;
@@ -93,6 +94,7 @@ public class GameManager : MonoBehaviour
     private void DecreaseHP()
     {
         currentHP--;
+        shakeCamera.CameraShaker();
     }
 
     public bool IsTitle()

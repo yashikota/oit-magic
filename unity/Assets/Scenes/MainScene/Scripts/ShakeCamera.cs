@@ -9,13 +9,7 @@ public class ShakeCamera : MonoBehaviour
 
     private readonly float shakeDuration = 0.3f;
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-            CameraShaker();
-    }
-
-    private void CameraShaker()
+    public void CameraShaker()
     {
         cam.DOComplete();
         cam.DOShakePosition(shakeDuration, positionStrength);
