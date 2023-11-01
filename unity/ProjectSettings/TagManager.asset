@@ -11,6 +11,8 @@ TagManager:
   - GameOver
   - UI
   - HP
+  - StartButton
+  - EndButton
   layers:
   - Default
   - TransparentFX

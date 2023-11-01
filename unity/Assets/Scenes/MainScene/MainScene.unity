@@ -504,6 +504,7 @@ MonoBehaviour:
   timer: {fileID: 25859667}
   ranking: {fileID: 1640634090}
   playLog: {fileID: 77811692}
+  pointer: {fileID: 1951033257}
 --- !u!1 &139050939
 GameObject:
   m_ObjectHideFlags: 0

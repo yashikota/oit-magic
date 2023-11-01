@@ -10,15 +10,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ShakeCamera shakeCamera;
     [SerializeField] private Timer timer;
     [SerializeField] private PlayLog playLog;
-
-    private bool isTitle = true;
-    private bool isGameOver = false;
-    private bool isGameClear = false;
+    [SerializeField] private Scene scene;
 
     public static int round = 0;
     private string element;
 
-    private List<GameObject> hpList;
+    private readonly List<GameObject> hpList = new();
     private int beforeHP = 3;
     private int currentHP = 3;
 
@@ -28,7 +25,6 @@ public class GameManager : MonoBehaviour
     {
         Init();
 
-        hpList = new List<GameObject>();
         Magics = new Dictionary<string, string[,]>
         {
             { "Fire", new string[,] { { "Left", "1" }, { "Top", "2" }, { "Bottom", "3" }, {"Right", "4"} } },
@@ -46,12 +42,9 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
+        timer.TimerReset();
         Rounds();
-    }
-
-    public int GetRound()
-    {
-        return round;
+        HP();
     }
 
     private void Update()
@@ -65,8 +58,6 @@ public class GameManager : MonoBehaviour
         {
             DecreaseHP();
         }
-
-        HP();
     }
 
     public void OnHit(string hitTargetName)
@@ -88,9 +79,13 @@ public class GameManager : MonoBehaviour
     private void HP()
     {
         if (currentHP == beforeHP) return;
-        if (currentHP == 0) isGameOver = true;
+        else if (currentHP == 0)
+        {
+            scene.GameOver();
+            return;
+        }
 
-        var hp = GameObject.Find("HP" + (currentHP + 1));
+        var hp = GameObject.Find("HP" + beforeHP);
         hpList.Add(hp);
         hp.SetActive(false);
 
@@ -101,36 +96,8 @@ public class GameManager : MonoBehaviour
     {
         currentHP--;
         shakeCamera.CameraShaker();
-    }
 
-    public bool IsTitle()
-    {
-        return isTitle;
-    }
-
-    public void SetTitle(bool isTitle)
-    {
-        this.isTitle = isTitle;
-    }
-
-    public bool IsGameClear()
-    {
-        return isGameClear;
-    }
-
-    public void SetGameClear(bool isGameClear)
-    {
-        this.isGameClear = isGameClear;
-    }
-
-    public bool IsGameOver()
-    {
-        return isGameOver;
-    }
-
-    public void SetGameOver(bool isGameOver)
-    {
-        this.isGameOver = isGameOver;
+        HP();
     }
 
     private void Rounds()
@@ -162,7 +129,7 @@ public class GameManager : MonoBehaviour
                 target.GenerateTargets(Magics[element]);
                 break;
             default:
-                isGameClear = true;
+                scene.GameClear();
                 break;
         }
     }
@@ -172,9 +139,7 @@ public class GameManager : MonoBehaviour
         round = 0;
         currentHP = 3;
         beforeHP = 3;
-        isGameOver = false;
-        isGameClear = false;
-        timer.Reset();
+        timer.TimerReset();
 
         foreach (var hp in hpList)
         {

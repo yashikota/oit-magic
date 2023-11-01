@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class RankingData
+public class PlayData
 {
     public string playTime;
     public int round;
@@ -25,7 +25,7 @@ public class PlayLog : MonoBehaviour
         path += @"\" + fileName;
         if (!File.Exists(path)) File.Create(path);
 
-        var data = new RankingData()
+        var data = new PlayData()
         {
             playTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
             round = GameManager.round,
