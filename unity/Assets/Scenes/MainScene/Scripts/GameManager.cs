@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public static int round = 0;
     private string element;
 
-    private List<GameObject> hpList = new();
+    private List<GameObject> hpList;
     private int beforeHP = 3;
     private int currentHP = 3;
 
@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         Init();
 
+        hpList = new List<GameObject>();
         Magics = new Dictionary<string, string[,]>
         {
             { "Fire", new string[,] { { "Left", "1" }, { "Top", "2" }, { "Bottom", "3" }, {"Right", "4"} } },

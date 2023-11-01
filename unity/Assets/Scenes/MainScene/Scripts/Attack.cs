@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -22,6 +23,7 @@ public class Attack : MonoBehaviour
         {
             magics = handle.Result;
         }
+        magics = magics.OrderBy(magic => magic.name).ToList();
     }
 
     public void Type(string element)
@@ -63,7 +65,7 @@ public class Attack : MonoBehaviour
 
     private void Aqua()
     {
-        var waterTornadoPrefab = magics[1];
+        var waterTornadoPrefab = magics[3];
         var waterTornado = Instantiate(waterTornadoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         waterTornado.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
@@ -99,7 +101,7 @@ public class Attack : MonoBehaviour
 
     private void Lightning()
     {
-        var lightningBoltPrefab = magics[3];
+        var lightningBoltPrefab = magics[1];
         var lightningBolt = Instantiate(lightningBoltPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         lightningBolt.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
