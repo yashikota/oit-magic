@@ -13,13 +13,14 @@ public class PlayLogData
 
 public class PlayLog : MonoBehaviour
 {
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Timer timer;
 
     public void Save()
     {
         float playTime = Time.timeSinceLevelLoad;
-        bool isGameOver = GameManager.isGameOver;
-        int round = GameManager.round;
+        bool isGameOver = gameManager.IsGameOver();
+        int round = gameManager.GetRound();
         float time = timer.GetTime();
         string playerName = ""; // todo
 
