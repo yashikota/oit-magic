@@ -5,9 +5,11 @@ public class Pointer : MonoBehaviour
     [SerializeField] private GameObject pointerSprite;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private UDPManager udpManager;
+    [SerializeField] private Scene scene;
 
     private Camera mainCamera;
     private Vector3 initializePosition;
+    private float touchTime = 0f;
 
     private void Start()
     {
@@ -23,6 +25,11 @@ public class Pointer : MonoBehaviour
         var nearClipPlane = mainCamera.nearClipPlane + position;
 
         initializePosition = mainCamera.ViewportToWorldPoint(new Vector3(center, center, nearClipPlane));
+    }
+
+    public void ResetPosition()
+    {
+        pointerSprite.transform.position = initializePosition;
     }
 
     private void Update()
@@ -46,6 +53,7 @@ public class Pointer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("StartButton") || other.gameObject.CompareTag("EndButton")) touchTime = Time.time;
         if (!other.gameObject.CompareTag("Target")) return;
 
         var targetName = other.gameObject.name;
@@ -54,8 +62,25 @@ public class Pointer : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.CompareTag("StartButton") || other.gameObject.CompareTag("EndButton")) touchTime = 0f;
         if (!other.gameObject.CompareTag("Target")) return;
 
         gameManager.IncrementCount();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("StartButton"))
+        {
+            // more than 2 seconds to start
+            if (Time.time - touchTime > 2f) scene.OnClickStart();
+            return;
+        }
+        else if (other.gameObject.CompareTag("EndButton"))
+        {
+            // more than 2 seconds to end
+            if (Time.time - touchTime > 2f) scene.OnClickEnd();
+            return;
+        }
     }
 }

@@ -9,37 +9,50 @@ public class Scene : MonoBehaviour
     [SerializeField] private GameObject gameClear;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject UI;
+    [SerializeField] private Timer timer;
+    [SerializeField] private Ranking ranking;
+    [SerializeField] private PlayLog playLog;
+    [SerializeField] private Pointer pointer;
 
-    void Update()
+    public void Title()
     {
-        if (gameManager.IsTitle())
-        {
-            UI.SetActive(false);
-            title.SetActive(true);
-        }
-        else if (gameManager.IsGameClear())
-        {
-            var targets = GameObject.FindGameObjectsWithTag("Target");
-            targets.ToList().ForEach(target => target.SetActive(false));
+        UI.SetActive(false);
+        InactiveTargets();
+        title.SetActive(true);
+    }
 
-            UI.SetActive(false);
-            gameClear.SetActive(true);
-        }
-        else if (gameManager.IsGameOver())
-        {
-            var targets = GameObject.FindGameObjectsWithTag("Target");
-            targets.ToList().ForEach(target => target.SetActive(false));
+    public void GameClear()
+    {
+        GameEnd();
+        gameClear.SetActive(true);
+        ranking.UpdateRanking(timer.GetTime());
+    }
 
-            UI.SetActive(false);
-            gameOver.SetActive(true);
-        }
+    public void GameOver()
+    {
+        GameEnd();
+        gameOver.SetActive(true);
+        PlayLog.isGameOver = true;
+    }
+
+    private void GameEnd()
+    {
+        UI.SetActive(false);
+        InactiveTargets();
+        timer.TimerStop();
+        playLog.Save();
+    }
+
+    private void InactiveTargets()
+    {
+        var targets = GameObject.FindGameObjectsWithTag("Target");
+        targets.ToList().ForEach(target => target.SetActive(false));
     }
 
     public void OnClickStart()
     {
         title.SetActive(false);
         UI.SetActive(true);
-        gameManager.SetTitle(false);
         gameManager.GameStart();
     }
 
@@ -49,6 +62,6 @@ public class Scene : MonoBehaviour
         title.SetActive(true);
         gameClear.SetActive(false);
         gameOver.SetActive(false);
-        gameManager.SetTitle(true);
+        pointer.ResetPosition();
     }
 }

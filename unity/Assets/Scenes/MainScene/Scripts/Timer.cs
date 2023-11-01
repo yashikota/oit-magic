@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
 
     private float oldSeconds;
     private TextMeshProUGUI timerText;
-    private bool isStop = false;
+    private bool isStop = true;
 
     private void Start()
     {
@@ -18,22 +18,28 @@ public class Timer : MonoBehaviour
         timerText = GetComponent<TextMeshProUGUI>();
     }
 
-    public void Stop()
+    public void TimerStop()
     {
         isStop = true;
     }
 
-    public void Reset()
+    public void TimerReset()
     {
         minute = 0;
         seconds = 0f;
         oldSeconds = 0f;
         timerText.text = minute.ToString("00") + " : " + ((int)seconds).ToString("00");
+        isStop = false;
     }
 
-    public float GetTime()
+    public int GetTime()
     {
-        return minute * 60 + seconds;
+        return minute * 60 + (int)seconds;
+    }
+
+    public string GetTimeString()
+    {
+        return minute.ToString("00") + ":" + ((int)seconds).ToString("00");
     }
 
     public void Update()
