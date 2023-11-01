@@ -1,8 +1,10 @@
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class Pointer : MonoBehaviour
 {
-    [SerializeField] private GameObject pointerSprite;
+    [SerializeField] private GameObject pointerObject;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private UDPManager udpManager;
     [SerializeField] private Scene scene;
@@ -10,6 +12,7 @@ public class Pointer : MonoBehaviour
     private Camera mainCamera;
     private Vector3 initializePosition;
     private float touchTime = 0f;
+    private Tweener tweener;
 
     private void Start()
     {
@@ -29,7 +32,19 @@ public class Pointer : MonoBehaviour
 
     public void ResetPosition()
     {
-        pointerSprite.transform.position = initializePosition;
+        pointerObject.transform.position = initializePosition;
+    }
+
+    private void FillAmount()
+    {
+        tweener = pointerObject.GetComponent<Image>().DOFillAmount(0f, 2f);
+    }
+
+    private void ResetFillAmount()
+    {
+        if (tweener == null) return;
+        tweener.Kill();
+        pointerObject.GetComponent<Image>().fillAmount = 1f;
     }
 
     private void Update()
@@ -47,13 +62,17 @@ public class Pointer : MonoBehaviour
         var y = float.Parse(coordinateParts[1]) / attenuationRate;
 
         var position = new Vector3(x, y, rangeFromCamera) + initializePosition;
-        pointerSprite.transform.position = position;
-        pointerSprite.transform.LookAt(mainCamera.transform);
+        pointerObject.transform.position = position;
+        pointerObject.transform.LookAt(mainCamera.transform);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("StartButton") || other.gameObject.CompareTag("EndButton")) touchTime = Time.time;
+        if (other.gameObject.CompareTag("StartButton") || other.gameObject.CompareTag("EndButton"))
+        {
+            touchTime = Time.time;
+            FillAmount();
+        }
         if (!other.gameObject.CompareTag("Target")) return;
 
         var targetName = other.gameObject.name;
@@ -62,7 +81,11 @@ public class Pointer : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("StartButton") || other.gameObject.CompareTag("EndButton")) touchTime = 0f;
+        if (other.gameObject.CompareTag("StartButton") || other.gameObject.CompareTag("EndButton"))
+        {
+            touchTime = 0f;
+            ResetFillAmount();
+        }
         if (!other.gameObject.CompareTag("Target")) return;
 
         gameManager.IncrementCount();
@@ -73,14 +96,20 @@ public class Pointer : MonoBehaviour
         if (other.gameObject.CompareTag("StartButton"))
         {
             // more than 2 seconds to start
-            if (Time.time - touchTime > 2f) scene.OnClickStart();
-            return;
+            if (Time.time - touchTime > 2f)
+            {
+                ResetFillAmount();
+                scene.OnClickStart();
+            }
         }
         else if (other.gameObject.CompareTag("EndButton"))
         {
             // more than 2 seconds to end
-            if (Time.time - touchTime > 2f) scene.OnClickEnd();
-            return;
+            if (Time.time - touchTime > 2f)
+            {
+                ResetFillAmount();
+                scene.OnClickEnd();
+            }
         }
     }
 }
