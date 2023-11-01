@@ -23,6 +23,14 @@ public class Timer : MonoBehaviour
         isStop = true;
     }
 
+    public void Reset()
+    {
+        minute = 0;
+        seconds = 0f;
+        oldSeconds = 0f;
+        timerText.text = minute.ToString("00") + " : " + ((int)seconds).ToString("00");
+    }
+
     public float GetTime()
     {
         return minute * 60 + seconds;

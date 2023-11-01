@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Attack attack;
     [SerializeField] private RoundManager roundManager;
     [SerializeField] private ShakeCamera shakeCamera;
+    [SerializeField] private Timer timer;
     [SerializeField] private PlayLog playLog;
 
     private bool isTitle = true;
@@ -168,6 +169,7 @@ public class GameManager : MonoBehaviour
         beforeHP = 3;
         isGameOver = false;
         isGameClear = false;
+        timer.Reset();
 
         foreach (var hp in hpList)
         {

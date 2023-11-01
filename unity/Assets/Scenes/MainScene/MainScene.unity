@@ -402,6 +402,8 @@ MonoBehaviour:
   target: {fileID: 139050941}
   attack: {fileID: 1432390279}
   roundManager: {fileID: 469269342}
+  shakeCamera: {fileID: 2075255440}
+  timer: {fileID: 25859667}
   playLog: {fileID: 77811692}
 --- !u!1 &77811690
 GameObject:
