@@ -1,45 +1,39 @@
+using System;
 using System.IO;
 using UnityEngine;
 
-[System.Serializable]
-public class PlayLogData
+[Serializable]
+public class RankingData
 {
-    public float playTime;
-    public bool isGameOver;
+    public string playTime;
     public int round;
-    public float time;
-    public string playerName;
+    public string gameStatus;
+    public string endTime;
 }
 
 public class PlayLog : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
+    public static bool isGameOver = false;
     [SerializeField] private Timer timer;
 
     public void Save()
     {
-        float playTime = Time.timeSinceLevelLoad;
-        bool isGameOver = gameManager.IsGameOver();
-        int round = gameManager.GetRound();
-        float time = timer.GetTime();
-        string playerName = ""; // todo
+        string fileName = "log.json";
+        string userName = Environment.UserName;
+        string path = @"C:\Users\" + userName + @"\Documents\oit-magic";
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        path += @"\" + fileName;
+        if (!File.Exists(path)) File.Create(path);
 
-        string path = Application.dataPath + "/playlog.json";
-        string json = "";
-        if (File.Exists(path))
+        var data = new RankingData()
         {
-            json = File.ReadAllText(path);
-        }
-
-        PlayLogData data = new()
-        {
-            playTime = playTime,
-            isGameOver = isGameOver,
-            round = round,
-            time = time,
-            playerName = playerName
+            playTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+            round = GameManager.round,
+            gameStatus = isGameOver ? "GameOver" : "GameClear",
+            endTime = timer.GetTimeString(),
         };
-        json += JsonUtility.ToJson(data) + "\n";
-        File.WriteAllText(path, json);
+
+        var json = JsonUtility.ToJson(data);
+        File.AppendAllText(path, json + Environment.NewLine);
     }
 }
