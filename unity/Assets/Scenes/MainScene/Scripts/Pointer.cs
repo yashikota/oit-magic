@@ -14,7 +14,7 @@ public class Pointer : MonoBehaviour
     private float touchTime;
     private Tweener tweener;
 
-    public static bool isLock = true;
+    public static bool IsButtonLock = true;
 
     private void Start()
     {
@@ -69,7 +69,7 @@ public class Pointer : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            isLock = false;
+            IsButtonLock = false;
         }
     }
 
@@ -102,8 +102,7 @@ public class Pointer : MonoBehaviour
     {
         if (other.gameObject.CompareTag("StartButton"))
         {
-            if (!(Time.time - touchTime > 2f)) return;
-            if(isLock) return;
+            if (!(Time.time - touchTime > 2f) || IsButtonLock) return;
             ResetFillAmount();
             scene.OnClickStart();
         }

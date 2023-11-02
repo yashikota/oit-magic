@@ -11,10 +11,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Battle battle;
 
     private IList<GameObject> enemies;
-    private GameObject enemy = null;
+    private GameObject enemy;
+    private bool isEnemyNull;
 
     private void Start()
     {
+        isEnemyNull = enemy == null;
         StartCoroutine(LoadAsset());
     }
 
@@ -30,10 +32,9 @@ public class Enemy : MonoBehaviour
         enemies = enemies.OrderBy(enemy => enemy.name).ToList();
     }
 
-    public string GetName()
+    public static string GetName()
     {
-        if (GameManager.Round <= 3) return "Slime";
-        else return "BlackKnight";
+        return GameManager.Round <= 3 ? "Slime" : "BlackKnight";
     }
 
     public void Summon(string element)
@@ -61,10 +62,10 @@ public class Enemy : MonoBehaviour
         battle.BattleStart();
     }
 
-    private void Slime(string name)
+    private void Slime(string type)
     {
-        float size = 3.0f;
-        var slimePrefab = enemies.Where(enemy => enemy.name == name).FirstOrDefault();
+        const float size = 3.0f;
+        var slimePrefab = enemies.FirstOrDefault(enemy => enemy.name == type);
         var slime = Instantiate(slimePrefab, new Vector3(0, 0, 0), Quaternion.identity);
         slime.transform.Rotate(new Vector3(0, 180, 0));
         slime.transform.localScale = new Vector3(size, size, size);
@@ -73,7 +74,7 @@ public class Enemy : MonoBehaviour
 
     private void BlackKnight(string element)
     {
-        float size = 2.0f;
+        const float size = 2.0f;
         var blackKnightPrefab = enemies[0];
         var blackKnight = Instantiate(blackKnightPrefab, new Vector3(0, 0, -5.5f), Quaternion.identity);
         blackKnight.transform.localScale = new Vector3(size, size, size);
@@ -83,7 +84,7 @@ public class Enemy : MonoBehaviour
 
     public void DestroyEnemy()
     {
-        if (enemy == null) return;
+        if (isEnemyNull) return;
         Destroy(enemy);
     }
 }

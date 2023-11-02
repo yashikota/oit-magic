@@ -63,6 +63,6 @@ public class Scene : MonoBehaviour
         gameClear.SetActive(false);
         gameOver.SetActive(false);
         pointer.ResetPosition();
-        Pointer.isLock = true;
+        Pointer.IsButtonLock = true;
     }
 }

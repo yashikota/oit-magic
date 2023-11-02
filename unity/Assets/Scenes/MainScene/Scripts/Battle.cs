@@ -8,11 +8,9 @@ public class Battle : MonoBehaviour
 
     private void Update()
     {
-        if (enemy.GetName() == "Slime" && countdown.Is15Seconds())
-        {
-            countdown.StartTimer();
-            gameManager.Rounds();
-        }
+        if (Enemy.GetName() != "Slime" || !countdown.Is15Seconds()) return;
+        countdown.StartTimer();
+        gameManager.Rounds();
     }
 
     public void BattleStart()

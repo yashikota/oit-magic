@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Countdown : MonoBehaviour
 {
-    private bool is15Seconds = false;
+    private bool is15Seconds;
     private float seconds;
 
     public void StartTimer()

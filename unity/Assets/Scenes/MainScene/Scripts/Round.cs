@@ -44,7 +44,7 @@ public class Round : MonoBehaviour
         return IsNormalRound() ? NormalRound() : FreeRound();
     }
 
-    private bool IsNormalRound()
+    private static bool IsNormalRound()
     {
         return GameManager.Round is 1 or 2 or 3 or 7;
     }

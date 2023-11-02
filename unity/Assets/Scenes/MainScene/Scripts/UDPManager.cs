@@ -50,7 +50,7 @@ public class UDPManager : MonoBehaviour
         _udp.Send(data, data.Length, "localhost", SendPort);
     }
 
-    private void SendFinish()
+    private static void SendFinish()
     {
         var data = Encoding.UTF8.GetBytes("finish");
         _udp.Send(data, data.Length, "localhost", SendPort);
