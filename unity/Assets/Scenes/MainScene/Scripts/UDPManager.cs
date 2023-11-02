@@ -24,6 +24,7 @@ public class UDPManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        SendFinish();
         thread.Abort();
         _udp.Close();
     }
@@ -46,6 +47,12 @@ public class UDPManager : MonoBehaviour
     public static void SendReset()
     {
         var data = Encoding.UTF8.GetBytes("reset");
+        _udp.Send(data, data.Length, "localhost", SendPort);
+    }
+
+    private void SendFinish()
+    {
+        var data = Encoding.UTF8.GetBytes("finish");
         _udp.Send(data, data.Length, "localhost", SendPort);
     }
 }
