@@ -4,19 +4,21 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private Countdown countdown;
-    [SerializeField] private Battle battle;
+    [SerializeField] private Particle particle;
+    [SerializeField] private Image slimeAppear;
 
     private IList<GameObject> enemies;
     private GameObject enemy;
-    private bool isEnemyNull;
+
+    public List<string> elements;
+    private string enemyElement;
 
     private void Start()
     {
-        isEnemyNull = enemy == null;
         StartCoroutine(LoadAsset());
     }
 
@@ -32,51 +34,68 @@ public class Enemy : MonoBehaviour
         enemies = enemies.OrderBy(enemy => enemy.name).ToList();
     }
 
+    public void SetElements()
+    {
+        elements = new List<string> { "Fire", "Aqua", "Wind" };
+    }
+
     public static string GetName()
     {
         return GameManager.Round <= 3 ? "Slime" : "BlackKnight";
     }
 
-    public void Summon(string element)
+    public string GetElement()
     {
-        switch (element)
+        return enemyElement;
+    }
+
+    public void Summon(string PlayerElement)
+    {
+        switch (PlayerElement)
         {
             case "Fire":
-                Slime("WindSlimePrefab");
+                enemyElement = "Wind";
+                Slime(enemyElement);
                 break;
             case "Aqua":
-                DestroyEnemy();
-                Slime("FireSlimePrefab");
+                enemyElement = "Fire";
+                Slime(enemyElement);
                 break;
             case "Wind":
-                DestroyEnemy();
-                Slime("WaterSlimePrefab");
+                enemyElement = "Aqua";
+                Slime(enemyElement);
                 break;
             case "Free":
+                var random = Random.Range(0, elements.Count);
+                enemyElement = elements[random];
+                elements.Remove(enemyElement);
+                BlackKnight();
+                break;
             case "Lightning":
-                DestroyEnemy();
-                BlackKnight(element);
+                enemyElement = "Dark";
+                BlackKnight();
                 break;
         }
 
-        battle.BattleStart();
+        particle.GenerateParticle(enemyElement);
     }
 
-    private void Slime(string type)
+    private void Slime(string enemyElement)
     {
+        enemyElement += "SlimePrefab";
         const float size = 3.0f;
-        var slimePrefab = enemies.FirstOrDefault(enemy => enemy.name == type);
+        var slimePrefab = enemies.FirstOrDefault(enemy => enemy.name == enemyElement);
         var slime = Instantiate(slimePrefab, new Vector3(0, 0, 0), Quaternion.identity);
         slime.transform.Rotate(new Vector3(0, 180, 0));
         slime.transform.localScale = new Vector3(size, size, size);
         enemy = slime;
     }
 
-    private void BlackKnight(string element)
+    private void BlackKnight()
     {
-        const float size = 2.0f;
-        var blackKnightPrefab = enemies[0];
-        var blackKnight = Instantiate(blackKnightPrefab, new Vector3(0, 0, -5.5f), Quaternion.identity);
+        const float size = 2.5f;
+        var blackKnightPrefab = enemies[1];
+        var blackKnight = Instantiate(blackKnightPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         blackKnight.transform.localScale = new Vector3(size, size, size);
         blackKnight.transform.Rotate(new Vector3(0, 180, 0));
         enemy = blackKnight;
@@ -84,7 +103,12 @@ public class Enemy : MonoBehaviour
 
     public void DestroyEnemy()
     {
-        if (isEnemyNull) return;
+        if (enemy == null) return;
         Destroy(enemy);
+    }
+
+    public void BlackKnightAttackAnimation()
+    {
+        BlackKnightAnimator.Attack();
     }
 }

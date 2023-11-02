@@ -1,12 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class Attack : MonoBehaviour
 {
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private Battle battle;
+    [SerializeField] private RoundManager roundManager;
+
     private IList<GameObject> magics;
 
     private void Start()
@@ -26,9 +32,9 @@ public class Attack : MonoBehaviour
         magics = magics.OrderBy(magic => magic.name).ToList();
     }
 
-    public void Type(string element)
+    public void Type(string playerElement)
     {
-        switch (element)
+        switch (playerElement)
         {
             case "Fire":
                 Fire();
@@ -42,6 +48,15 @@ public class Attack : MonoBehaviour
             case "Lightning":
                 Lightning();
                 break;
+        }
+
+        if (battle.IsPlayerElementWin(playerElement, enemy.GetElement()))
+        {
+            battle.PlayerWin();
+        }
+        else
+        {
+            battle.PlayerLose();
         }
     }
 
