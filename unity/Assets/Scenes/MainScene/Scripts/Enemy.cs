@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        // StartCoroutine(LoadAsset());
+        StartCoroutine(LoadAsset());
     }
 
     private IEnumerator LoadAsset()

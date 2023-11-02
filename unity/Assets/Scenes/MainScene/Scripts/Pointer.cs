@@ -50,7 +50,7 @@ public class Pointer : MonoBehaviour
     private void Update()
     {
         var coordinateData = udpManager.GetCoordinate();
-        const int attenuationRate = 250;
+        const int attenuationRate = 100;
         const float rangeFromCamera = 0.1f;
 
         if (string.IsNullOrEmpty(coordinateData)) return;
