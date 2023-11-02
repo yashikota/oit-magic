@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 6168221022126170316}
   - component: {fileID: 5914164381929059825}
   m_Layer: 0
-  m_Name: WaterSlimePrefab
+  m_Name: AquaSlimePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
