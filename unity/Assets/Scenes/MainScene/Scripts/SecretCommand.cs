@@ -21,7 +21,6 @@ public class SecretCommand : MonoBehaviour
         }
 
         if (index != secretCode.Length) return;
-        Debug.Log("Secret Command!");
         index = 0;
         scene.GameOver();
     }
