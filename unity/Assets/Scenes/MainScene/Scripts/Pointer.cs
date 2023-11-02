@@ -8,17 +8,20 @@ public class Pointer : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private UDPManager udpManager;
     [SerializeField] private Scene scene;
+    [SerializeField] private AudioClip se;
 
     private Camera mainCamera;
     private Vector3 initializePosition;
     private float touchTime;
     private Tweener tweener;
+    private AudioSource audioSource;
 
     public static bool IsButtonLock = true;
 
     private void Start()
     {
         mainCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
 
         SetPosition();
     }
@@ -79,6 +82,7 @@ public class Pointer : MonoBehaviour
         {
             touchTime = Time.time;
             FillAmount();
+            audioSource.PlayOneShot(se);
         }
         if (!other.gameObject.CompareTag("Target")) return;
 
@@ -92,6 +96,7 @@ public class Pointer : MonoBehaviour
         {
             touchTime = 0f;
             ResetFillAmount();
+            audioSource.Stop();
         }
         if (!other.gameObject.CompareTag("Target")) return;
 
