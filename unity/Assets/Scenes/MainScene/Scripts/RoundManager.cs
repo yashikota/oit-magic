@@ -1,14 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class Round : MonoBehaviour
+public class RoundManager : MonoBehaviour
 {
-    private string element;
+    [SerializeField] private Enemy enemy;
+
+    private string PlayerElement;
     private string hitTargetName;
     public static int Count = 1;
     private List<string> checkedList;
     private Dictionary<string, bool> elements;
+    public static bool isReset;
 
     private string firstTargetName;
     private string currentTargetName;
@@ -26,22 +30,24 @@ public class Round : MonoBehaviour
         };
     }
 
-    public string Rounds(string elem, string target)
+    public async Task<string> Rounds(string elem, string target)
     {
-        element = elem;
+        PlayerElement = elem;
         hitTargetName = target;
+
+        if (isReset) return null;
 
         // target is not selected
         if (!checkedList.Any()) Count = 1;
 
-        firstTargetName = GameManager.Magics[element][0, 0];
-        targetLength = GameManager.Magics[element].GetLength(0);
-        lastTargetNumber = GameManager.Magics[element][targetLength - 1, 1];
+        firstTargetName = GameManager.Magics[PlayerElement][0, 0];
+        targetLength = GameManager.Magics[PlayerElement].GetLength(0);
+        lastTargetNumber = GameManager.Magics[PlayerElement][targetLength - 1, 1];
 
         // already selected
         if (checkedList.Contains(hitTargetName)) { Count--; return null; }
 
-        return IsNormalRound() ? NormalRound() : FreeRound();
+        return IsNormalRound() ? await NormalRound() : await FreeRound();
     }
 
     private static bool IsNormalRound()
@@ -49,9 +55,9 @@ public class Round : MonoBehaviour
         return GameManager.Round is 1 or 2 or 3 or 7;
     }
 
-    private string NormalRound()
+    private async Task<string> NormalRound()
     {
-        currentTargetName = GameManager.Magics[element][Count - 1, 0].Replace("2", "");
+        currentTargetName = GameManager.Magics[PlayerElement][Count - 1, 0].Replace("2", "");
 
         // start and end are same
         if (targetLength == Count + 1 && GameManager.Round is 3 or 7)
@@ -66,16 +72,18 @@ public class Round : MonoBehaviour
             Target.ChangeColor(hitTargetName, Color.blue);
             checkedList.Add(hitTargetName);
             if (Count != targetLength) return null;
+            isReset = true;
             Reset();
 
-            return element;
+            return PlayerElement;
         }
         else
         {
             Target.ChangeColor(hitTargetName, Color.red);
+            await Task.Delay(500);
             Reset();
 
-            foreach (var key in GameManager.Magics[element].Cast<string>()
+            foreach (var key in GameManager.Magics[PlayerElement].Cast<string>()
                 .Where((_, i) => i % 2 == 0)
                 .Select(v => v.Replace("2", ""))
                 .Except(checkedList))
@@ -87,7 +95,7 @@ public class Round : MonoBehaviour
         }
     }
 
-    private string FreeRound()
+    private async Task<string> FreeRound()
     {
         var limit = 4;
 
@@ -123,8 +131,9 @@ public class Round : MonoBehaviour
         else
         {
             Target.ChangeColor(hitTargetName, Color.red);
+            await Task.Delay(500);
             Reset();
-            foreach (var key in GameManager.Magics[element].Cast<string>()
+            foreach (var key in GameManager.Magics[PlayerElement].Cast<string>()
                 .Where((_, i) => i % 2 == 0).Select(v => v.Replace("2", ""))
                 .Except(checkedList))
             {
@@ -135,7 +144,7 @@ public class Round : MonoBehaviour
         return null;
     }
 
-    private void Reset()
+    public async void Reset()
     {
         Count = 1;
         checkedList.Clear();
@@ -143,5 +152,9 @@ public class Round : MonoBehaviour
         elements["Fire"] = true;
         elements["Aqua"] = true;
         elements["Wind"] = true;
+
+        enemy.SetElements();
+
+        await Task.Delay(1000);
     }
 }
