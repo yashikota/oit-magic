@@ -13,14 +13,14 @@ public class PlayData
 
 public class PlayLog : MonoBehaviour
 {
-    public static bool isGameOver = false;
+    public static bool IsGameOver = false;
     [SerializeField] private Timer timer;
 
     public void Save()
     {
-        string fileName = "log.json";
-        string userName = Environment.UserName;
-        string path = @"C:\Users\" + userName + @"\Documents\oit-magic";
+        const string fileName = "log.json";
+        var userName = Environment.UserName;
+        var path = @"C:\Users\" + userName + @"\Documents\oit-magic";
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         path += @"\" + fileName;
         if (!File.Exists(path)) File.Create(path);
@@ -28,8 +28,8 @@ public class PlayLog : MonoBehaviour
         var data = new PlayData()
         {
             playTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-            round = GameManager.round,
-            gameStatus = isGameOver ? "GameOver" : "GameClear",
+            round = GameManager.Round,
+            gameStatus = IsGameOver ? "GameOver" : "GameClear",
             endTime = timer.GetTimeString(),
         };
 

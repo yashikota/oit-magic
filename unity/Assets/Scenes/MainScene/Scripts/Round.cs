@@ -46,7 +46,7 @@ public class Round : MonoBehaviour
 
     private bool IsNormalRound()
     {
-        return GameManager.round is 1 or 2 or 3 or 7;
+        return GameManager.Round is 1 or 2 or 3 or 7;
     }
 
     private string NormalRound()
@@ -54,7 +54,7 @@ public class Round : MonoBehaviour
         currentTargetName = GameManager.Magics[element][Count - 1, 0].Replace("2", "");
 
         // start and end are same
-        if (targetLength == Count + 1 && GameManager.round is 3 or 7)
+        if (targetLength == Count + 1 && GameManager.Round is 3 or 7)
         {
             checkedList.Remove(firstTargetName);
             Target.ChangeColor(firstTargetName, Color.white);
@@ -76,7 +76,7 @@ public class Round : MonoBehaviour
             Reset();
 
             foreach (var key in GameManager.Magics[element].Cast<string>()
-                .Where((v, i) => i % 2 == 0)
+                .Where((_, i) => i % 2 == 0)
                 .Select(v => v.Replace("2", ""))
                 .Except(checkedList))
             {
@@ -101,7 +101,7 @@ public class Round : MonoBehaviour
 
         // Fire, Aqua, Wind
         foreach (var key in new List<string>(elements.Keys)
-            .TakeWhile(key => Count < limit)
+            .TakeWhile(_ => Count < limit)
             .Where(key => GameManager.Magics[key][Count - 1, 0] != hitTargetName))
         {
             elements[key] = false;
@@ -125,7 +125,7 @@ public class Round : MonoBehaviour
             Target.ChangeColor(hitTargetName, Color.red);
             Reset();
             foreach (var key in GameManager.Magics[element].Cast<string>()
-                .Where((v, i) => i % 2 == 0).Select(v => v.Replace("2", ""))
+                .Where((_, i) => i % 2 == 0).Select(v => v.Replace("2", ""))
                 .Except(checkedList))
             {
                 Target.ChangeColor(key, Color.white);

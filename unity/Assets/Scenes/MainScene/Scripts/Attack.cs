@@ -47,19 +47,19 @@ public class Attack : MonoBehaviour
 
     private void Fire()
     {
-        var ExplosionPrefab = magics[0];
-        var Explosion = Instantiate(ExplosionPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        Explosion.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+        var explosionPrefab = magics[0];
+        var explosion = Instantiate(explosionPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        explosion.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
 
-        if (Explosion.TryGetComponent<ParticleSystem>(out var ExplosionParticle))
+        if (explosion.TryGetComponent<ParticleSystem>(out var explosionParticle))
         {
-            ExplosionParticle.Play();
-            var duration = ExplosionParticle.main.duration;
-            Destroy(Explosion, duration);
+            explosionParticle.Play();
+            var duration = explosionParticle.main.duration;
+            Destroy(explosion, duration);
         }
         else
         {
-            Destroy(Explosion);
+            Destroy(explosion);
         }
     }
 

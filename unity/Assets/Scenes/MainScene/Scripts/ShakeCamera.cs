@@ -7,12 +7,12 @@ public class ShakeCamera : MonoBehaviour
     [SerializeField] private Vector3 positionStrength;
     [SerializeField] private Vector3 rotationStrength;
 
-    private readonly float shakeDuration = 0.3f;
+    private const float ShakeDuration = 0.3f;
 
     public void CameraShaker()
     {
         cam.DOComplete();
-        cam.DOShakePosition(shakeDuration, positionStrength);
-        cam.DOShakeRotation(shakeDuration, rotationStrength);
+        cam.DOShakePosition(ShakeDuration, positionStrength);
+        cam.DOShakeRotation(ShakeDuration, rotationStrength);
     }
 }

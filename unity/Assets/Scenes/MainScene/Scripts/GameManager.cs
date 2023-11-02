@@ -9,15 +9,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Round roundManager;
     [SerializeField] private ShakeCamera shakeCamera;
     [SerializeField] private Timer timer;
-    [SerializeField] private PlayLog playLog;
     [SerializeField] private Scene scene;
 
-    public static int round = 0;
+    public static int Round;
     private string element;
 
     private readonly List<GameObject> hpList = new();
-    private int beforeHP = 3;
-    private int currentHP = 3;
+    private int beforeHp = 3;
+    private int currentHp = 3;
 
     public static Dictionary<string, string[,]> Magics;
 
@@ -27,15 +26,15 @@ public class GameManager : MonoBehaviour
 
         Magics = new Dictionary<string, string[,]>
         {
-            { "Fire", new string[,] { { "Left", "1" }, { "Top", "2" }, { "Bottom", "3" }, {"Right", "4"} } },
-            { "Aqua", new string[,] { { "Top", "1" }, { "Bottom", "2" }, { "Left", "3" }, { "Right", "4" } } },
-            { "Wind", new string[,] { { "Top", "1" }, { "Left", "2" }, { "Bottom", "3" }, { "Right", "4" }, {"Top2", "5"} } },
-            { "Lightning", new string[,] { { "Left", "1" }, { "Right", "2" }, { "BottomLeft", "3" }, { "Top", "4" }, { "BottomRight", "5" }, {"Left2", "6"}} },
-            { "Free", new string[,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
+            { "Fire", new [,] { { "Left", "1" }, { "Top", "2" }, { "Bottom", "3" }, {"Right", "4"} } },
+            { "Aqua", new [,] { { "Top", "1" }, { "Bottom", "2" }, { "Left", "3" }, { "Right", "4" } } },
+            { "Wind", new [,] { { "Top", "1" }, { "Left", "2" }, { "Bottom", "3" }, { "Right", "4" }, {"Top2", "5"} } },
+            { "Lightning", new [,] { { "Left", "1" }, { "Right", "2" }, { "BottomLeft", "3" }, { "Top", "4" }, { "BottomRight", "5" }, {"Left2", "6"}} },
+            { "Free", new [,] { { "Top", "" }, { "Bottom", "" }, { "Left", "" }, { "Right", "" } } },
         };
     }
 
-    private async void Init()
+    private static async void Init()
     {
         await Task.Delay(500);
     }
@@ -44,7 +43,7 @@ public class GameManager : MonoBehaviour
     {
         timer.TimerReset();
         Rounds();
-        HP();
+        Hp();
     }
 
     private void Update()
@@ -56,7 +55,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            DecreaseHP();
+            DecreaseHp();
         }
     }
 
@@ -64,47 +63,44 @@ public class GameManager : MonoBehaviour
     {
         var result = roundManager.Rounds(element, hitTargetName);
         if (result == null) return;
-        else
-        {
-            attack.Type(result);
-            Rounds();
-        }
+        attack.Type(result);
+        Rounds();
     }
 
-    public void IncrementCount()
+    public static void IncrementCount()
     {
-        Round.Count++;
+        global::Round.Count++;
     }
 
-    private void HP()
+    private void Hp()
     {
-        if (currentHP == beforeHP) return;
-        else if (currentHP == 0)
+        if (currentHp == beforeHp) return;
+        else if (currentHp == 0)
         {
             scene.GameOver();
             return;
         }
 
-        var hp = GameObject.Find("HP" + beforeHP);
+        var hp = GameObject.Find("HP" + beforeHp);
         hpList.Add(hp);
         hp.SetActive(false);
 
-        beforeHP = currentHP;
+        beforeHp = currentHp;
     }
 
-    private void DecreaseHP()
+    private void DecreaseHp()
     {
-        currentHP--;
+        currentHp--;
         shakeCamera.CameraShaker();
 
-        HP();
+        Hp();
     }
 
     private void Rounds()
     {
         Target.DestroyTargets();
 
-        switch (++round)
+        switch (++Round)
         {
             case 1:
                 element = "Fire";
@@ -136,9 +132,9 @@ public class GameManager : MonoBehaviour
 
     public void Reset()
     {
-        round = 0;
-        currentHP = 3;
-        beforeHP = 3;
+        Round = 0;
+        currentHp = 3;
+        beforeHp = 3;
         timer.TimerReset();
 
         foreach (var hp in hpList)

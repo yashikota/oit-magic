@@ -11,7 +11,7 @@ public class Pointer : MonoBehaviour
 
     private Camera mainCamera;
     private Vector3 initializePosition;
-    private float touchTime = 0f;
+    private float touchTime;
     private Tweener tweener;
 
     private void Start()
@@ -88,28 +88,22 @@ public class Pointer : MonoBehaviour
         }
         if (!other.gameObject.CompareTag("Target")) return;
 
-        gameManager.IncrementCount();
+        GameManager.IncrementCount();
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("StartButton"))
         {
-            // more than 2 seconds to start
-            if (Time.time - touchTime > 2f)
-            {
-                ResetFillAmount();
-                scene.OnClickStart();
-            }
+            if (!(Time.time - touchTime > 2f)) return;
+            ResetFillAmount();
+            scene.OnClickStart();
         }
         else if (other.gameObject.CompareTag("EndButton"))
         {
-            // more than 2 seconds to end
-            if (Time.time - touchTime > 2f)
-            {
-                ResetFillAmount();
-                scene.OnClickEnd();
-            }
+            if (!(Time.time - touchTime > 2f)) return;
+            ResetFillAmount();
+            scene.OnClickEnd();
         }
     }
 }

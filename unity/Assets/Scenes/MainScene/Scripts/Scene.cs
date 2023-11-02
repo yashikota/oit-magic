@@ -8,7 +8,7 @@ public class Scene : MonoBehaviour
     [SerializeField] private GameObject title;
     [SerializeField] private GameObject gameClear;
     [SerializeField] private GameObject gameOver;
-    [SerializeField] private GameObject UI;
+    [SerializeField] private GameObject Ui;
     [SerializeField] private Timer timer;
     [SerializeField] private Ranking ranking;
     [SerializeField] private PlayLog playLog;
@@ -16,7 +16,7 @@ public class Scene : MonoBehaviour
 
     public void Title()
     {
-        UI.SetActive(false);
+        Ui.SetActive(false);
         InactiveTargets();
         title.SetActive(true);
     }
@@ -32,12 +32,12 @@ public class Scene : MonoBehaviour
     {
         GameEnd();
         gameOver.SetActive(true);
-        PlayLog.isGameOver = true;
+        PlayLog.IsGameOver = true;
     }
 
     private void GameEnd()
     {
-        UI.SetActive(false);
+        Ui.SetActive(false);
         InactiveTargets();
         timer.TimerStop();
         playLog.Save();
@@ -52,7 +52,7 @@ public class Scene : MonoBehaviour
     public void OnClickStart()
     {
         title.SetActive(false);
-        UI.SetActive(true);
+        Ui.SetActive(true);
         gameManager.GameStart();
     }
 

@@ -406,7 +406,6 @@ MonoBehaviour:
   roundManager: {fileID: 469269342}
   shakeCamera: {fileID: 2075255440}
   timer: {fileID: 25859667}
-  playLog: {fileID: 77811692}
   scene: {fileID: 103324495}
 --- !u!1 &77811690
 GameObject:
@@ -501,7 +500,7 @@ MonoBehaviour:
   title: {fileID: 348371107}
   gameClear: {fileID: 796995006}
   gameOver: {fileID: 1114567031}
-  UI: {fileID: 853866145}
+  Ui: {fileID: 853866145}
   timer: {fileID: 25859667}
   ranking: {fileID: 1640634090}
   playLog: {fileID: 77811692}

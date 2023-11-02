@@ -4,7 +4,7 @@ public class SecretCommand : MonoBehaviour
 {
     [SerializeField] private Scene scene;
     private readonly string[] secretCode = new string[] { "up", "up", "down", "down", "left", "right", "left", "right", "b", "a" };
-    private int index = 0;
+    private int index;
 
     public void Update()
     {
@@ -20,11 +20,9 @@ public class SecretCommand : MonoBehaviour
             }
         }
 
-        if (index == secretCode.Length)
-        {
-            Debug.Log("Secret Command!");
-            index = 0;
-            scene.GameOver();
-        }
+        if (index != secretCode.Length) return;
+        Debug.Log("Secret Command!");
+        index = 0;
+        scene.GameOver();
     }
 }

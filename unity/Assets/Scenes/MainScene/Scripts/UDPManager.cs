@@ -18,7 +18,7 @@ public class UDPManager : MonoBehaviour
         _udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         _udp.Client.Bind(new IPEndPoint(IPAddress.Any, ReceivePort));
 
-        thread = new Thread(new ThreadStart(ThreadMethod));
+        thread = new Thread(ThreadMethod);
         thread.Start();
     }
 

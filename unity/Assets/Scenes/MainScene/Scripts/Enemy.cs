@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(LoadAsset());
+        // StartCoroutine(LoadAsset());
     }
 
     private IEnumerator LoadAsset()
@@ -44,37 +44,15 @@ public class Enemy : MonoBehaviour
 
     private void Slime()
     {
-        var SlimePrefab = enemies[1];
-        var Slime = Instantiate(SlimePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        Slime.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-
-        // if (Slime.TryGetComponent<ParticleSystem>(out var SlimeParticle))
-        // {
-        //     SlimeParticle.Play();
-        //     var duration = SlimeParticle.main.duration;
-        //     Destroy(Slime, duration);
-        // }
-        // else
-        // {
-        //     Destroy(Slime);
-        // }
+        var slimePrefab = enemies[1];
+        var slime = Instantiate(slimePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        slime.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
     }
 
     private void BlackKnight()
     {
-        var DragonPrefab = enemies[0];
-        var Dragon = Instantiate(DragonPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        Dragon.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-
-        // if (Dragon.TryGetComponent<ParticleSystem>(out var DragonParticle))
-        // {
-        //     DragonParticle.Play();
-        //     var duration = DragonParticle.main.duration;
-        //     Destroy(Dragon, duration);
-        // }
-        // else
-        // {
-        //     Destroy(Dragon);
-        // }
+        var blackKnightPrefab = enemies[0];
+        var blackKnight = Instantiate(blackKnightPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        blackKnight.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
     }
 }
