@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Target target;
     [SerializeField] private Attack attack;
-    [SerializeField] private RoundManager roundManager;
+    [SerializeField] private Round roundManager;
     [SerializeField] private ShakeCamera shakeCamera;
     [SerializeField] private Timer timer;
     [SerializeField] private PlayLog playLog;
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void OnHit(string hitTargetName)
     {
-        var result = roundManager.Round(element, hitTargetName);
+        var result = roundManager.Rounds(element, hitTargetName);
         if (result == null) return;
         else
         {
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
     public void IncrementCount()
     {
-        RoundManager.Count++;
+        Round.Count++;
     }
 
     private void HP()

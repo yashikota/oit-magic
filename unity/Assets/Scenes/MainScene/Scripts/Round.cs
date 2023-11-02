@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoundManager : MonoBehaviour
+public class Round : MonoBehaviour
 {
     private string element;
     private string hitTargetName;
@@ -26,7 +26,7 @@ public class RoundManager : MonoBehaviour
         };
     }
 
-    public string Round(string elem, string target)
+    public string Rounds(string elem, string target)
     {
         element = elem;
         hitTargetName = target;
