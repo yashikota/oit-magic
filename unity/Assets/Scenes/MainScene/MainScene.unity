@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.09841844, g: 0.16645457, b: 0.3000598, a: 1}
+  m_IndirectSpecularColor: {r: 0.098341584, g: 0.16658139, b: 0.3000317, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -407,6 +407,7 @@ MonoBehaviour:
   shakeCamera: {fileID: 2075255440}
   timer: {fileID: 25859667}
   scene: {fileID: 103324495}
+  enemy: {fileID: 1721893929}
 --- !u!1 &77811690
 GameObject:
   m_ObjectHideFlags: 0

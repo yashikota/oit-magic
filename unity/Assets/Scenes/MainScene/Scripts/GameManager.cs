@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ShakeCamera shakeCamera;
     [SerializeField] private Timer timer;
     [SerializeField] private Scene scene;
+    [SerializeField] private Enemy enemy;
 
     public static int Round;
     private string element;
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            DecreaseHp();
+            Rounds();
         }
     }
 
@@ -105,26 +106,32 @@ public class GameManager : MonoBehaviour
             case 1:
                 element = "Fire";
                 target.GenerateTargets(Magics[element]);
+                enemy.Summon(element);
                 break;
             case 2:
                 element = "Aqua";
                 target.GenerateTargets(Magics[element]);
+                enemy.Summon(element);
                 break;
             case 3:
                 element = "Wind";
                 target.GenerateTargets(Magics[element]);
+                enemy.Summon(element);
                 break;
             case 4:
             case 5:
             case 6:
                 element = "Free";
                 target.GenerateTargets(Magics[element]);
+                enemy.Summon(element);
                 break;
             case 7:
                 element = "Lightning";
                 target.GenerateTargets(Magics[element]);
+                enemy.Summon(element);
                 break;
             default:
+                enemy.DestroyEnemy();
                 scene.GameClear();
                 break;
         }

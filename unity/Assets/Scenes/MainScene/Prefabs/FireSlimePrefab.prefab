@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 1072860490948064271}
   - component: {fileID: 678118933844844850}
   m_Layer: 0
-  m_Name: FireSlimePrefab 1
+  m_Name: FireSlimePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

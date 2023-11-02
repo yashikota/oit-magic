@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class Enemy : MonoBehaviour
 {
     private IList<GameObject> enemies;
+    private GameObject enemy = null;
 
     private void Start()
     {
@@ -24,35 +25,54 @@ public class Enemy : MonoBehaviour
             enemies = handle.Result;
         }
         enemies = enemies.OrderBy(enemy => enemy.name).ToList();
+    }
 
-        foreach (var enemy in enemies)
+    public void Summon(string element)
+    {
+        switch (element)
         {
-            Debug.Log(enemy.name);
+            case "Fire":
+                Slime("WindSlimePrefab");
+                break;
+            case "Aqua":
+                DestroyEnemy();
+                Slime("FireSlimePrefab");
+                break;
+            case "Wind":
+                DestroyEnemy();
+                Slime("WaterSlimePrefab");
+                break;
+            case "Free":
+            case "Lightning":
+                DestroyEnemy();
+                BlackKnight(element);
+                break;
         }
     }
 
-    private void Update()
+    private void Slime(string name)
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Slime();
-        } else if (Input.GetKeyDown(KeyCode.B))
-        {
-            BlackKnight();
-        }
-    }
-
-    private void Slime()
-    {
-        var slimePrefab = enemies[1];
+        float size = 3.0f;
+        var slimePrefab = enemies.Where(enemy => enemy.name == name).FirstOrDefault();
         var slime = Instantiate(slimePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        slime.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+        slime.transform.Rotate(new Vector3(0, 180, 0));
+        slime.transform.localScale = new Vector3(size, size, size);
+        enemy = slime;
     }
 
-    private void BlackKnight()
+    private void BlackKnight(string element)
     {
+        float size = 2.0f;
         var blackKnightPrefab = enemies[0];
-        var blackKnight = Instantiate(blackKnightPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        blackKnight.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+        var blackKnight = Instantiate(blackKnightPrefab, new Vector3(0, 0, -5.5f), Quaternion.identity);
+        blackKnight.transform.localScale = new Vector3(size, size, size);
+        blackKnight.transform.Rotate(new Vector3(0, 180, 0));
+        enemy = blackKnight;
+    }
+
+    public void DestroyEnemy()
+    {
+        if (enemy == null) return;
+        Destroy(enemy);
     }
 }
