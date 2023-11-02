@@ -41,6 +41,7 @@ public class Scene : MonoBehaviour
         InactiveTargets();
         timer.TimerStop();
         playLog.Save();
+        gameManager.Reset();
     }
 
     private void InactiveTargets()

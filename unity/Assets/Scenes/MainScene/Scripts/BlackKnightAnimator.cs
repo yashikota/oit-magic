@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class BlackKnightAnimator : MonoBehaviour
 {
-    private Animator anim;
+    private static Animator anim;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
     }
 
-    public void Attack()
+    public static void Attack()
     {
         anim.SetBool("isAttack", true);
     }
 
-    public void Standby()
+    public static void Standby()
     {
         anim.SetBool("isAttack", false);
     }

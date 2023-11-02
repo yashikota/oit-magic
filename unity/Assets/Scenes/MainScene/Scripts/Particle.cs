@@ -29,11 +29,11 @@ public class Particle : MonoBehaviour
 
     }
 
-    public void GenerateParticle(string element)
+    public void GenerateParticle(string EnemyElement)
     {
         string particleName = "";
 
-        switch (element)
+        switch (EnemyElement)
         {
             case "Fire":
                 particleName = "magic_ring_02";
@@ -44,7 +44,7 @@ public class Particle : MonoBehaviour
             case "Wind":
                 particleName = "magic_ring_04";
                 break;
-            case "Lightning":
+            case "Dark":
                 particleName = "magic_ring_05";
                 break;
         }

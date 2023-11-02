@@ -28,7 +28,7 @@ public class PlayLog : MonoBehaviour
         var data = new PlayData()
         {
             playTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-            round = GameManager.Round,
+            round = GameManager.Round - 1,
             gameStatus = IsGameOver ? "GameOver" : "GameClear",
             endTime = timer.GetTimeString(),
         };

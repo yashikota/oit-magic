@@ -8,7 +8,8 @@ public class Pointer : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private UDPManager udpManager;
     [SerializeField] private Scene scene;
-    [SerializeField] private AudioClip se;
+    [SerializeField] private AudioClip buttonSe;
+    [SerializeField] private AudioClip targetSe;
 
     private Camera mainCamera;
     private Vector3 initializePosition;
@@ -82,12 +83,14 @@ public class Pointer : MonoBehaviour
         {
             touchTime = Time.time;
             FillAmount();
-            audioSource.PlayOneShot(se);
+            audioSource.PlayOneShot(buttonSe);
         }
         if (!other.gameObject.CompareTag("Target")) return;
 
+        audioSource.PlayOneShot(targetSe);
+
         var targetName = other.gameObject.name;
-        gameManager.OnHit(targetName);
+        _ = gameManager.OnHit(targetName);
     }
 
     private void OnTriggerExit(Collider other)

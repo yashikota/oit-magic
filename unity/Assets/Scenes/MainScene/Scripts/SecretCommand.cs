@@ -3,7 +3,7 @@ using UnityEngine;
 public class SecretCommand : MonoBehaviour
 {
     [SerializeField] private Scene scene;
-    private readonly string[] secretCode = new string[] { "up", "up", "down", "down", "left", "right", "left", "right", "b", "a" };
+    private readonly string[] secretCode = new string[] { "o", "i", "t"};
     private int index;
 
     public void Update()
