@@ -14,6 +14,8 @@ public class Pointer : MonoBehaviour
     private float touchTime;
     private Tweener tweener;
 
+    private bool isLock = true;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -64,6 +66,11 @@ public class Pointer : MonoBehaviour
         var position = new Vector3(x, y, rangeFromCamera) + initializePosition;
         pointerObject.transform.position = position;
         pointerObject.transform.LookAt(mainCamera.transform);
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            isLock = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -96,6 +103,7 @@ public class Pointer : MonoBehaviour
         if (other.gameObject.CompareTag("StartButton"))
         {
             if (!(Time.time - touchTime > 2f)) return;
+            if(isLock) return;
             ResetFillAmount();
             scene.OnClickStart();
         }
