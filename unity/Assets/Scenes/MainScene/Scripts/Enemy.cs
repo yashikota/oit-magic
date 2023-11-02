@@ -7,6 +7,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Countdown countdown;
+    [SerializeField] private Battle battle;
+
     private IList<GameObject> enemies;
     private GameObject enemy = null;
 
@@ -25,6 +28,12 @@ public class Enemy : MonoBehaviour
             enemies = handle.Result;
         }
         enemies = enemies.OrderBy(enemy => enemy.name).ToList();
+    }
+
+    public string GetName()
+    {
+        if (GameManager.Round <= 3) return "Slime";
+        else return "BlackKnight";
     }
 
     public void Summon(string element)
@@ -48,6 +57,8 @@ public class Enemy : MonoBehaviour
                 BlackKnight(element);
                 break;
         }
+
+        battle.BattleStart();
     }
 
     private void Slime(string name)

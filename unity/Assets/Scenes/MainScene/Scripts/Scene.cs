@@ -4,15 +4,15 @@ using UnityEngine;
 public class Scene : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private Timer timer;
+    [SerializeField] private Ranking ranking;
+    [SerializeField] private PlayLog playLog;
+    [SerializeField] private Pointer pointer;
 
     [SerializeField] private GameObject title;
     [SerializeField] private GameObject gameClear;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject Ui;
-    [SerializeField] private Timer timer;
-    [SerializeField] private Ranking ranking;
-    [SerializeField] private PlayLog playLog;
-    [SerializeField] private Pointer pointer;
 
     public void Title()
     {

@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         Hp();
     }
 
-    private void Rounds()
+    public void Rounds()
     {
         Target.DestroyTargets();
 
