@@ -14,7 +14,7 @@ public class Pointer : MonoBehaviour
     private float touchTime;
     private Tweener tweener;
 
-    private bool isLock = true;
+    public static bool isLock = true;
 
     private void Start()
     {
