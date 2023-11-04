@@ -71,7 +71,7 @@ public class Pointer : MonoBehaviour
         pointerObject.transform.position = position;
         pointerObject.transform.LookAt(mainCamera.transform);
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             IsButtonLock = false;
         }

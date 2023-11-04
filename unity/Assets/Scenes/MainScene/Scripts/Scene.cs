@@ -26,6 +26,7 @@ public class Scene : MonoBehaviour
         GameEnd();
         gameClear.SetActive(true);
         ranking.UpdateRanking(timer.GetTime());
+        gameManager.Reset();
     }
 
     public void GameOver()
@@ -33,6 +34,7 @@ public class Scene : MonoBehaviour
         GameEnd();
         gameOver.SetActive(true);
         PlayLog.IsGameOver = true;
+        gameManager.Reset();
     }
 
     private void GameEnd()
@@ -41,7 +43,6 @@ public class Scene : MonoBehaviour
         InactiveTargets();
         timer.TimerStop();
         playLog.Save();
-        gameManager.Reset();
     }
 
     private void InactiveTargets()
