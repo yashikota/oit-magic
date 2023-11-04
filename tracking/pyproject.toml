@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "tracking"
+version = "0.1.0"
+description = ""
+authors = ["kota <52403688+yashikota@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+opencv-python = "^4.8.1.78"
+mediapipe = "^0.10.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
