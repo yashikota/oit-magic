@@ -1,5 +1,7 @@
 # oit-magic
 
+[demo](https://github.com/yashikota/oit-magic/assets/52403688/acfae7c6-e447-4f6f-b9a0-d86922f7de3e)
+
 説明資料は[こちら](https://raw.githubusercontent.com/yashikota/oit-magic/master/docs/oit-magic.pdf)  
 
 ## 環境
