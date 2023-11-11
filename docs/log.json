@@ -1,0 +1,572 @@
+[
+    {
+        "playTime": "2023/11/03 10:21:18",
+        "round": 5,
+        "gameStatus": "GameClear",
+        "endTime": "03:14"
+    },
+    {
+        "playTime": "2023/11/03 10:23:01",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:26"
+    },
+    {
+        "playTime": "2023/11/03 10:25:30",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:57"
+    },
+    {
+        "playTime": "2023/11/03 10:28:51",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:04"
+    },
+    {
+        "playTime": "2023/11/03 10:32:04",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:47"
+    },
+    {
+        "playTime": "2023/11/03 10:34:24",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:50"
+    },
+    {
+        "playTime": "2023/11/03 10:37:28",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:07"
+    },
+    {
+        "playTime": "2023/11/03 10:41:34",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "03:07"
+    },
+    {
+        "playTime": "2023/11/03 10:45:38",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "03:14"
+    },
+    {
+        "playTime": "2023/11/03 10:48:04",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:43"
+    },
+    {
+        "playTime": "2023/11/03 10:53:34",
+        "round": 5,
+        "gameStatus": "GameOver",
+        "endTime": "05:00"
+    },
+    {
+        "playTime": "2023/11/03 10:55:13",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:05"
+    },
+    {
+        "playTime": "2023/11/03 11:02:01",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "00:53"
+    },
+    {
+        "playTime": "2023/11/03 11:12:46",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:52"
+    },
+    {
+        "playTime": "2023/11/03 11:15:06",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:54"
+    },
+    {
+        "playTime": "2023/11/03 11:20:24",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:19"
+    },
+    {
+        "playTime": "2023/11/03 11:22:11",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:26"
+    },
+    {
+        "playTime": "2023/11/03 11:24:38",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:39"
+    },
+    {
+        "playTime": "2023/11/03 11:28:27",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:03"
+    },
+    {
+        "playTime": "2023/11/03 11:31:12",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:17"
+    },
+    {
+        "playTime": "2023/11/03 11:40:09",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:57"
+    },
+    {
+        "playTime": "2023/11/03 11:43:13",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:13"
+    },
+    {
+        "playTime": "2023/11/03 11:54:44",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:37"
+    },
+    {
+        "playTime": "2023/11/03 11:56:41",
+        "round": 4,
+        "gameStatus": "GameClear",
+        "endTime": "01:34"
+    },
+    {
+        "playTime": "2023/11/03 11:59:17",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:00"
+    },
+    {
+        "playTime": "2023/11/03 12:01:41",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:41"
+    },
+    {
+        "playTime": "2023/11/03 12:05:28",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "03:09"
+    },
+    {
+        "playTime": "2023/11/03 12:09:08",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:23"
+    },
+    {
+        "playTime": "2023/11/03 12:11:53",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:50"
+    },
+    {
+        "playTime": "2023/11/03 12:14:28",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:16"
+    },
+    {
+        "playTime": "2023/11/03 12:18:23",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:33"
+    },
+    {
+        "playTime": "2023/11/03 12:29:19",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:17"
+    },
+    {
+        "playTime": "2023/11/03 12:32:02",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:38"
+    },
+    {
+        "playTime": "2023/11/03 12:37:34",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:37"
+    },
+    {
+        "playTime": "2023/11/03 12:39:40",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:36"
+    },
+    {
+        "playTime": "2023/11/03 12:43:04",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:05"
+    },
+    {
+        "playTime": "2023/11/03 12:48:12",
+        "round": 3,
+        "gameStatus": "GameClear",
+        "endTime": "03:57"
+    },
+    {
+        "playTime": "2023/11/03 12:50:56",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:34"
+    },
+    {
+        "playTime": "2023/11/03 12:56:58",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "04:13"
+    },
+    {
+        "playTime": "2023/11/03 12:58:47",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:16"
+    },
+    {
+        "playTime": "2023/11/03 13:02:07",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:56"
+    },
+    {
+        "playTime": "2023/11/03 13:04:21",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:50"
+    },
+    {
+        "playTime": "2023/11/03 13:08:12",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "03:20"
+    },
+    {
+        "playTime": "2023/11/03 13:10:26",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:53"
+    },
+    {
+        "playTime": "2023/11/03 13:12:04",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:07"
+    },
+    {
+        "playTime": "2023/11/03 13:15:38",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:55"
+    },
+    {
+        "playTime": "2023/11/03 13:18:47",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:32"
+    },
+    {
+        "playTime": "2023/11/03 13:29:19",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:55"
+    },
+    {
+        "playTime": "2023/11/03 13:36:16",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "03:15"
+    },
+    {
+        "playTime": "2023/11/03 13:39:32",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:05"
+    },
+    {
+        "playTime": "2023/11/03 13:44:48",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:16"
+    },
+    {
+        "playTime": "2023/11/03 13:46:35",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:06"
+    },
+    {
+        "playTime": "2023/11/03 13:48:45",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:43"
+    },
+    {
+        "playTime": "2023/11/03 13:51:10",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:55"
+    },
+    {
+        "playTime": "2023/11/03 13:59:57",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:30"
+    },
+    {
+        "playTime": "2023/11/03 14:01:36",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:08"
+    },
+    {
+        "playTime": "2023/11/03 14:02:29",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:40"
+    },
+    {
+        "playTime": "2023/11/03 14:06:07",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:18"
+    },
+    {
+        "playTime": "2023/11/03 14:08:42",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:16"
+    },
+    {
+        "playTime": "2023/11/03 14:10:33",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:24"
+    },
+    {
+        "playTime": "2023/11/03 14:14:18",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:42"
+    },
+    {
+        "playTime": "2023/11/03 14:18:16",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:57"
+    },
+    {
+        "playTime": "2023/11/03 14:20:38",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:48"
+    },
+    {
+        "playTime": "2023/11/03 14:23:17",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:23"
+    },
+    {
+        "playTime": "2023/11/03 14:25:08",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:22"
+    },
+    {
+        "playTime": "2023/11/03 14:27:55",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:45"
+    },
+    {
+        "playTime": "2023/11/03 14:32:33",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:10"
+    },
+    {
+        "playTime": "2023/11/03 14:35:03",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:00"
+    },
+    {
+        "playTime": "2023/11/03 14:37:41",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:10"
+    },
+    {
+        "playTime": "2023/11/03 14:43:16",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:31"
+    },
+    {
+        "playTime": "2023/11/03 14:46:00",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:59"
+    },
+    {
+        "playTime": "2023/11/03 14:53:45",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:11"
+    },
+    {
+        "playTime": "2023/11/03 14:56:53",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:44"
+    },
+    {
+        "playTime": "2023/11/03 14:59:34",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:17"
+    },
+    {
+        "playTime": "2023/11/03 15:04:20",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:43"
+    },
+    {
+        "playTime": "2023/11/03 15:07:32",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:46"
+    },
+    {
+        "playTime": "2023/11/03 15:10:58",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:00"
+    },
+    {
+        "playTime": "2023/11/03 15:15:15",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:00"
+    },
+    {
+        "playTime": "2023/11/03 15:16:58",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:14"
+    },
+    {
+        "playTime": "2023/11/03 15:19:46",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:20"
+    },
+    {
+        "playTime": "2023/11/03 15:22:36",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:57"
+    },
+    {
+        "playTime": "2023/11/03 15:26:39",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:01"
+    },
+    {
+        "playTime": "2023/11/03 15:28:31",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:57"
+    },
+    {
+        "playTime": "2023/11/03 15:32:10",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "02:03"
+    },
+    {
+        "playTime": "2023/11/03 15:33:38",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:47"
+    },
+    {
+        "playTime": "2023/11/03 15:35:13",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:59"
+    },
+    {
+        "playTime": "2023/11/03 15:36:28",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:44"
+    },
+    {
+        "playTime": "2023/11/03 15:39:39",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "00:43"
+    },
+    {
+        "playTime": "2023/11/03 15:41:15",
+        "round": 7,
+        "gameStatus": "GameClear",
+        "endTime": "01:06"
+    },
+    {
+        "playTime": "2023/11/03 15:53:10",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:45"
+    },
+    {
+        "playTime": "2023/11/03 15:56:58",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:34"
+    },
+    {
+        "playTime": "2023/11/03 15:59:23",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:49"
+    },
+    {
+        "playTime": "2023/11/03 16:02:14",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "00:42"
+    },
+    {
+        "playTime": "2023/11/03 16:06:58",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "01:25"
+    },
+    {
+        "playTime": "2023/11/03 16:14:19",
+        "round": 7,
+        "gameStatus": "GameOver",
+        "endTime": "02:09"
+    }
+]
